@@ -10,6 +10,7 @@ import {
   ScrollView,
   Alert,
   StyleSheet,
+  Modal,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '../../context/AuthContext';
@@ -17,7 +18,6 @@ import { themeColors } from '../theme';
 import backButton from '../assets/icons/back-button.png';
 import LoginSuccessAlert from '../components/alerts/LoginSuccessAlert';
 import LoginErrorAlert from '../components/alerts/LoginErrorAlert';
-
 const LoginScreen = () => {
   const navigation = useNavigation();
   const { login } = useAuth();
@@ -44,6 +44,11 @@ const LoginScreen = () => {
   };
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      Alert.alert('Please enter your email and password.');
+      return;
+    }
+
     const apiUrl = 'http://localhost:3000/user/login'; // Replace with your backend URL
 
     try {
@@ -60,7 +65,6 @@ const LoginScreen = () => {
     } catch (error) {
       console.error(error);
       openErrorAlert();
-      
     }
   };
 

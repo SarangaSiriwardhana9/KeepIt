@@ -1,4 +1,3 @@
-// routes/book.js
 const express = require('express');
 const router = express.Router();
 const Book = require('../models/book'); // Import the Book model
@@ -6,7 +5,9 @@ const Book = require('../models/book'); // Import the Book model
 // Create a new book listing
 router.post('/add', async (req, res) => {
   try {
-    const newBook = new Book(req.body); // Assuming you send the book data in the request body
+    const bookData = req.body;
+    const newBook = new Book(bookData);
+
     const savedBook = await newBook.save();
     res.json(savedBook);
   } catch (err) {
@@ -43,7 +44,5 @@ async function getBook(req, res, next) {
   res.book = book;
   next();
 }
-
-
 
 module.exports = router;

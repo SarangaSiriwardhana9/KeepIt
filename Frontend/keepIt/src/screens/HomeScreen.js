@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, TouchableOpacity, StyleSheet,Text } from 'react-native';
 import axios from 'axios';
 import BookCard from '../components/BookCard';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../context/AuthContext';
 
 const HomeScreen = () => {
   const [books, setBooks] = useState([]);
   const navigation = useNavigation();
+  const { userName, userId } = useAuth();
 
   useEffect(() => {
     axios
@@ -31,6 +33,12 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
+  <View>
+      <Text style={styles.nametext} >Welcome, {userName}!</Text>
+      <Text style={styles.nametext} >Your MongoDB ID: {userId}</Text>
+      {/* Add the rest of your home screen content */}
+    </View>
+      
       <FlatList
         data={createPairs(books)}
         keyExtractor={(item, index) => `pair-${index}`}
@@ -73,6 +81,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowOffset: { width: 0, height: 2 },
     elevation: 5,
+  },
+  nametext: {
+    color: '#333333',
+  
   },
 });
 

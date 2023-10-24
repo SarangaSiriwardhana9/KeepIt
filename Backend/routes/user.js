@@ -1,23 +1,26 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt'); // For password hashing
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
-const jwt = require('jsonwebtoken');
-const secretKey = 'jbdysjRtY';
+const requiredProfileFields = ['fullName', 'mobileNo', 'nicCardNo', 'province', 'email', 'address', 'birthDate', 'profilePicture', 'cardHolderName', 'cardNumber', 'cardType', 'cardExpirationDate', 'cvvNumber'];
+function isProfileComplete(user) {
+  for (const field of requiredProfileFields) {
+    if (!user[field] || user[field] === null) {
+      return false;
+    }
+  }
+  return true;
+}
 
-// Register a new user
 router.post('/register', async (req, res) => {
   try {
-    const { fullName, mobileNo, nicCardNo, province, email, password } = req.body;
+    const { fullName, mobileNo, nicCardNo, province, email, password,address,birthDate,profilePicture,cardHolderName,cardNumber,cardType,cardExpirationDate ,cvvNumber,profileCompletion} = req.body;
 
-    // Check if the email is already registered
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email is already registered.' });
     }
-    // Hash the password before saving it to the database
     const hashedPassword = await bcrypt.hash(password, 10);
-    // Create a new user
     const user = new User({
       fullName,
       mobileNo,
@@ -25,8 +28,16 @@ router.post('/register', async (req, res) => {
       province,
       email,
       password: hashedPassword,
+      address,
+      birthDate,
+      profilePicture,
+      cardHolderName,
+      cardNumber,
+      cardType,
+      cardExpirationDate,
+      cvvNumber,
+      profileCompletion: false,
     });
-    // Save the user to the database
     await user.save();
     res.status(201).json({ message: 'User registered successfully.' });
   } catch (error) {
@@ -34,21 +45,18 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ message: 'Internal Server Error' });
   }
 });
-// Login
+
 router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ message: 'Invalid credentials.' });
     }
-    // Compare the hashed password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ message: 'Invalid credentials.' });
     }
-    // Send the complete user details in the response
     res.status(200).json({
       message: 'Login successful',
       user: {
@@ -57,6 +65,7 @@ router.post('/login', async (req, res) => {
         mobileNo: user.mobileNo,
         nicCardNo: user.nicCardNo,
         province: user.province,
+        _id: user._id,
       },
     });
   } catch (error) {
@@ -65,17 +74,13 @@ router.post('/login', async (req, res) => {
   }
 });
 
-
-// Retrieve user data by email
 router.get('/get-user-by-email', async (req, res) => {
   try {
-    const { email } = req.query; // Assuming you're passing the email as a query parameter
-    // Find the user by email
+    const { email } = req.query;
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
-    // Return the user's data
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -84,28 +89,21 @@ router.get('/get-user-by-email', async (req, res) => {
 });
 
 // Update user data by email
+
 router.put('/update-user', async (req, res) => {
   try {
-    const { email } = req.query; // Assuming you're passing the email as a query parameter
+    const { email } = req.query;
     const updatedData = req.body;
-    
-    // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
-    
-    // Update the user's data
     for (const key in updatedData) {
       if (Object.hasOwnProperty.call(updatedData, key)) {
         user[key] = updatedData[key];
       }
     }
-
-    // Save the updated user to the database
     await user.save();
-    
-    // Return the updated user's data
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -113,29 +111,22 @@ router.put('/update-user', async (req, res) => {
   }
 });
 
-// Update user payment details by email
-router.put('/update-payment-details', async (req, res) => {
-  try {
-    const { email } = req.query; // Assuming you're passing the email as a query parameter
-    const updatedPaymentData = req.body;
+// Update payment data by email
 
-    // Find the user by email
+router.put('/update-payment', async (req, res) => {
+  try {
+    const { email } = req.query;
+    const updatedPaymentData = req.body;
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ message: 'User not found.' });
     }
-
-    // Update the user's payment details
     for (const key in updatedPaymentData) {
       if (Object.hasOwnProperty.call(updatedPaymentData, key)) {
         user[key] = updatedPaymentData[key];
       }
     }
-
-    // Save the updated user to the database
     await user.save();
-
-    // Return the updated user's data
     res.status(200).json(user);
   } catch (error) {
     console.error(error);
@@ -144,5 +135,40 @@ router.put('/update-payment-details', async (req, res) => {
 });
 
 
-module.exports = router;
 
+// get profile completion status by email
+router.get('/get-profile-completion', async (req, res) => {
+  try {
+    const { email } = req.query;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    const isComplete = isProfileComplete(user);
+    user.profileCompletion = isComplete;
+    res.status(200).json({ profileCompletion: user.profileCompletion });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+router.get('/get-user-by-email', async (req, res) => {
+  try {
+    const { email } = req.query;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    res.status(200).json({
+      _id: user._id, // Include the _id field in the response
+      email: user.email,
+      // Include other user fields as needed
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
+module.exports = router;

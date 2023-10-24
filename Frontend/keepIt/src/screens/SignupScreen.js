@@ -31,6 +31,15 @@ const SignupScreen = () => {
       province,
       email,
       password,
+      address: '',
+      birthDate: '',
+      profilePicture: '',
+      cardHolderName: '',
+      cardNumber: '',
+      cardType: '',
+      cardExpirationDate: '',
+      cvvNumber: '',
+      
     };
 
     axios

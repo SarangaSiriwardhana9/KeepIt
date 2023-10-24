@@ -3,8 +3,10 @@ import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView 
 import ImagePicker from 'react-native-image-crop-picker';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
 const AddNewBook = () => {
+  const { userName, userId } = useAuth();
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [secondaryImage, setSecondaryImage] = useState(null);
   const [thirdImage, setThirdImage] = useState(null);
@@ -74,6 +76,8 @@ const AddNewBook = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
+      <Text style={styles.nametext} >Welcome, {userName}!</Text>
+      <Text style={styles.nametext} >Your MongoDB ID: {userId}</Text>
       <Text style={styles.header}>Add a Book</Text>
 
       <Text style={styles.label}>Cover Image :</Text>
@@ -250,5 +254,9 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderRadius: 10,
+  },
+  nametext: {
+    color: '#333333',
+  
   },
 });

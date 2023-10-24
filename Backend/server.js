@@ -4,6 +4,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/user");
 const bookRoutes = require("./routes/book");
 
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -32,6 +33,10 @@ app.use("/book", bookRoutes);
 
 // Use the user routes
 app.use("/user", userRoutes);
+
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

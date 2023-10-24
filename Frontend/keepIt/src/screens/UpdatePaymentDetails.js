@@ -1,28 +1,76 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, StyleSheet, SafeAreaView } from 'react-native';
 import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
+import ProfileUpdatedSuccessfullAlert from '../components/alerts/ProfileUpdateSuccessfullAlert';
+import ProfileUpdatedFailed from '../components/alerts/ProfileUpdatedFailedAlert';
+import { ScrollView } from 'react-native-gesture-handler';
 
-const UpdatePaymentDetails = ({ route, navigation }) => {
-  const { personalInfo } = route.params;
+const UpdatePaymentDetails = ({ navigation }) => {
+  const { user } = useAuth();
+  const [userProfile, setUserProfile] = useState(null);
+  const [isSuccessAlertVisible, setIsSuccessAlertVisible] = useState(false);
+  const [isErrorAlertVisible, setIsErrorAlertVisible] = useState(false);
+
+  const openSuccessAlert = () => {
+    setIsSuccessAlertVisible(true);
+  };
+
+  const closeSuccessAlert = () => {
+    setIsSuccessAlertVisible(false);
+    navigation.navigate('Home'); // Navigate to HomeScreen
+  };
+
+  const openErrorAlert = () => {
+    setIsErrorAlertVisible(true);
+  };
+
+  const closeErrorAlert = () => {
+    setIsErrorAlertVisible(false);
+  };
+
+
+
   const [paymentData, setPaymentData] = useState({
     cardHolderName: '',
-    cardType: '',
     cardNumber: '',
-    expirationDate: '',
-    cvv: '',
+    cardType: '',
+    cardExpirationDate: '',
+    cvvNumber: '',
   });
+ 
+  const [existingPaymentData, setExistingPaymentData] = useState(null);
+
+  useEffect(() => {
+    // Fetch the user's existing payment data when the component mounts
+    if (user) {
+      axios
+        .get(`http://localhost:3000/user/get-user-by-email?email=${user.email}`)
+        .then((response) => {
+          setExistingPaymentData(response.data);
+          // Populate the payment data input fields with existing data
+          setPaymentData({
+            cardHolderName: response.data.cardHolderName || '',
+            cardNumber: response.data.cardNumber || '',
+            cardType: response.data.cardType || '',
+            cardExpirationDate: response.data.cardExpirationDate || '',
+            cvvNumber: response.data.cvvNumber || '',
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [user]);
 
   const handleUpdatePayment = () => {
-    // Combine the personal information and payment data before sending to the server
-    const updatedData = { ...personalInfo, ...paymentData };
-
-    // Make a request to your backend to update the user's profile with payment details
+    // Send a PUT request to update the payment data
     axios
-      .put(`http://localhost:3000/user/update-payment-details?email=${personalInfo.email}`, updatedData)
+      .put(`http://localhost:3000/user/update-payment?email=${user.email}`, paymentData)
       .then((response) => {
-        // Handle success, e.g., show a success message
-        console.log('Payment details updated successfully');
-        // You can choose to navigate back to the personal information screen or perform any other actions.
+        openSuccessAlert();
+        console.log('Payment information updated successfully');
+        // You can add navigation logic to the next screen here
       })
       .catch((error) => {
         console.error(error);
@@ -30,69 +78,81 @@ const UpdatePaymentDetails = ({ route, navigation }) => {
   };
 
   return (
+    <ScrollView>
+      <SafeAreaView >
     <View style={styles.container}>
       <Text style={styles.title}>Update Payment Details</Text>
+      <Text style={styles.text}>Card Holder Name</Text>
       <TextInput
-        style={styles.inputField}
-        placeholder="Cardholder's Name"
-        placeholderTextColor={'#C4C4C4'}
-        value={paymentData.cardHolderName}
-        onChangeText={(text) => setPaymentData({ ...paymentData, cardHolderName: text })}
-      />
-      <TextInput
-        style={styles.inputField}
-        placeholder="Card Type"
-        placeholderTextColor={'#C4C4C4'}
-        value={paymentData.cardType}
-        onChangeText={(text) => setPaymentData({ ...paymentData, cardType: text })}
-      />
-      <TextInput
-        style={styles.inputField}
-        placeholder="Card Number"
-        placeholderTextColor={'#C4C4C4'}
-        value={paymentData.cardNumber}
-        onChangeText={(text) => setPaymentData({ ...paymentData, cardNumber: text })}
-      />
-      <TextInput
-        style={styles.inputField}
-        placeholder="Expiration Date"
-        placeholderTextColor={'#C4C4C4'}
-        value={paymentData.expirationDate}
-        onChangeText={(text) => setPaymentData({ ...paymentData, expirationDate: text })}
-      />
-      <TextInput
-        style={styles.inputField}
-        placeholder="CVV"
-        placeholderTextColor={'#C4C4C4'}
-        value={paymentData.cvv}
-        onChangeText={(text) => setPaymentData({ ...paymentData, cvv: text })}
-      />
+  style={styles.inputField}
+  placeholder="Card Holder Name"
+  value={paymentData.cardHolderName}
+  onChangeText={(text) => setPaymentData({ ...paymentData, cardHolderName: text })}
+/>
+<Text style={styles.text}>Card Number</Text>
+<TextInput
+  style={styles.inputField}
+  placeholder="Card Number"
+  value={paymentData.cardNumber}
+  onChangeText={(text) => setPaymentData({ ...paymentData, cardNumber: text })}
+/>
+<Text style={styles.text}>Card Type</Text>
+<TextInput
+  style={styles.inputField}
+  placeholder="Card Type"
+  value={paymentData.cardType}
+  onChangeText={(text) => setPaymentData({ ...paymentData, cardType: text })}
+/>
+<Text style={styles.text}>Card Expiration Date</Text>
+<TextInput
+  style={styles.inputField}
+  placeholder="Card Expiration Date"
+  value={paymentData.cardExpirationDate}
+  onChangeText={(text) => setPaymentData({ ...paymentData, cardExpirationDate: text })}
+/>
+<Text style={styles.text}>CVV Number</Text>
+<TextInput
+  style={styles.inputField}
+  placeholder="CVV Number"
+  value={paymentData.cvvNumber}
+  onChangeText={(text) => setPaymentData({ ...paymentData, cvvNumber: text })}
+/>
+
       <Button title="Update Payment" onPress={handleUpdatePayment} />
     </View>
+    </SafeAreaView>
+    
+      <ProfileUpdatedSuccessfullAlert isVisible={isSuccessAlertVisible} onClose={closeSuccessAlert} />
+      <ProfileUpdatedFailed isVisible={isErrorAlertVisible} onClose={closeErrorAlert} />
+
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    backgroundColor: '#F5F5F5',
+    padding: 16,
+   
   },
   title: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
-    color: '#333333',
+    marginBottom: 16,
+    color: '#333',
   },
   inputField: {
     borderWidth: 1,
-    borderColor: '#C4C4C4',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-    color: 'black',
-    
+    borderColor: '#ccc',
+    borderRadius: 4,
+    padding: 8,
+    marginBottom: 16,
+    color: '#333',
+  },
+  text: {
+    fontSize: 16,
+    marginBottom: 8,
+    color: '#333',
   },
 });
 

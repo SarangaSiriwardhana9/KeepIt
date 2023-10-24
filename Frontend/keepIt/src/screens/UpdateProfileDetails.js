@@ -38,6 +38,7 @@ const UpdateProfileDetails = ({ navigation }) => {
       .then((response) => {
         console.log('Profile updated successfully');
         setUserData(response.data);
+        navigation.navigate('UpdatePaymentDetails');
       })
       .catch((error) => {
         console.error(error);
@@ -165,6 +166,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingLeft: 10,
+    color: '#333333',
   },
   loadingText: {
     textAlign: 'center',

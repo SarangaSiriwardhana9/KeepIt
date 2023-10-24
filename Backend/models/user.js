@@ -32,17 +32,21 @@ const userSchema = new mongoose.Schema({
   cardHolderName: {
     type: String,
   },
-  cardType: {
-    type: String,
-  },
   cardNumber: {
     type: String,
   },
-  expirationDate: {
+  cardType: {
     type: String,
   },
-  cvv: {
+  cardExpirationDate: {
     type: String,
+  },
+  cvvNumber: {
+    type: String,
+  },
+  profileCompletion: {
+    type: Boolean,
+  
   },
 });
 
