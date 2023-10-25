@@ -9,8 +9,8 @@ const bookSchema = new mongoose.Schema({
   coverPhoto: String,
   secondaryImage: String,
   thirdImage: String,
-  sellerName: String,  // New field for seller name
-  sellerId: mongoose.Schema.Types.ObjectId,  // New field for seller ID
+  sellerName: String,  
+  sellerId: mongoose.Schema.Types.ObjectId,  
 });
 
 const Book = mongoose.model('Book', bookSchema);

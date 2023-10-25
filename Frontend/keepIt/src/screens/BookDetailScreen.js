@@ -7,6 +7,11 @@ const BookDetailsScreen = ({ route }) => {
   const { book } = route.params;
   const navigation = useNavigation();
 
+  // Function to navigate to SellerContactScreen
+  const navigateToSellerContact = () => {
+    navigation.navigate('SellerContactScreen');
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Swiper style={styles.swiperContainer} showsButtons={true} showsPagination={false}>
@@ -20,16 +25,10 @@ const BookDetailsScreen = ({ route }) => {
         <Text style={styles.price}>Price: Rs. {book.price}</Text>
         <Text style={styles.description}>Description: {book.description}</Text>
         <Text style={styles.SellerInfo}>Seller: {book.sellerName}</Text>
-        <TouchableOpacity> 
-          <Text style={styles.contactSeller} > Contact Seller
-           </Text>
+        <TouchableOpacity onPress={navigateToSellerContact}>
+          <Text style={styles.contactSeller}>Contact Seller</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            // Add functionality here
-          }}
-        >
+        <TouchableOpacity style={styles.button}>
           <Text style={styles.buttonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
@@ -37,9 +36,6 @@ const BookDetailsScreen = ({ route }) => {
   );
 };
 
-BookDetailsScreen.navigationOptions = {
-  headerShown: false,
-};
 
 const styles = StyleSheet.create({
   container: {

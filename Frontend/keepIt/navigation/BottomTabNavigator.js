@@ -1,19 +1,21 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import HomeScreen from '../src/screens/HomeScreen';
 import AddNewBook from '../src/screens/AddNewBook';
 import CartScreen from '../src/screens/CartScreen';
-import MenuScreen from '../src/screens/MenuScreen';
+import MenuStackNavigator from './MenuStackNavigator';
+import HomeStackNavigator from './HomeStackNavigator'; 
 
 const Tab = createBottomTabNavigator();
 
 const BottomTabNavigator = () => (
+  
   <Tab.Navigator>
     <Tab.Screen
       name="Home"
-      component={HomeScreen}
+      component={HomeStackNavigator} 
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Ionicons name="home-outline" color={color} size={size} />
         ),
@@ -44,16 +46,18 @@ const BottomTabNavigator = () => (
       }}
     />
 
-    <Tab.Screen
+<Tab.Screen
       name="MenuScreen"
-      component={MenuScreen}
+      component={MenuStackNavigator} // Use the new MenuStackNavigator
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Ionicons name="menu-outline" color={color} size={size} />
         ),
         tabBarLabel: 'Menu',
       }}
     />
+  
   </Tab.Navigator>
 );
 

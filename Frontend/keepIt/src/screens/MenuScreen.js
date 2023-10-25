@@ -66,7 +66,7 @@ const MenuScreen = () => {
           <Image source={require('../assets/pro.png')} style={styles.profileImage} />
         )}
         <Text style={styles.username}>
-          {user ? `${user.fullName} (ID: ${userId})` : 'Guest'}
+          {user ? `${user.fullName} ` : 'Guest'}
         </Text>
         {profileCompletion !== null && (
           <Text style={styles.profileMessage}>
