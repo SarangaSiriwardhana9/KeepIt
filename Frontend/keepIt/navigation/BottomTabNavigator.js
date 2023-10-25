@@ -25,6 +25,7 @@ const BottomTabNavigator = () => (
       name="AddNewBook"
       component={AddNewBook}
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Ionicons name="add-circle-outline" color={color} size={size} />
         ),

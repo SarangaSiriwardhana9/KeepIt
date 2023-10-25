@@ -3,13 +3,8 @@ import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet } from 'rea
 import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
 
-
 const BookDetailsScreen = ({ route }) => {
   const { book } = route.params;
-
-
-
-
   const navigation = useNavigation();
 
   return (
@@ -20,12 +15,22 @@ const BookDetailsScreen = ({ route }) => {
         <Image source={{ uri: book.thirdImage }} style={styles.image} />
       </Swiper>
       <View style={styles.detailsContainer}>
-        <Text style={styles.title}>{book.bookName}</Text>
-        <Text style={styles.author}>{book.authorName}</Text>
-        <Text style={styles.price}>{`Price: Rs. ${book.price}`}</Text>
-        <Text style={styles.description}>{book.description}</Text>
-        <TouchableOpacity style={styles.button} >
-          <Text style={styles.buttonText}>Add to cart</Text>
+        <Text style={styles.title}>Book Name: {book.bookName}</Text>
+        <Text style={styles.author}>Author: {book.authorName}</Text>
+        <Text style={styles.price}>Price: Rs. {book.price}</Text>
+        <Text style={styles.description}>Description: {book.description}</Text>
+        <Text style={styles.SellerInfo}>Seller: {book.sellerName}</Text>
+        <TouchableOpacity> 
+          <Text style={styles.contactSeller} > Contact Seller
+           </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            // Add functionality here
+          }}
+        >
+          <Text style={styles.buttonText}>Add to Cart</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -51,7 +56,6 @@ const styles = StyleSheet.create({
   },
   detailsContainer: {
     padding: 16,
-
   },
   title: {
     fontSize: 24,
@@ -71,7 +75,12 @@ const styles = StyleSheet.create({
   },
   description: {
     fontSize: 16,
-    marginBottom: 24,
+    marginBottom: 16,
+    color: '#474740',
+  },
+  SellerInfo: {
+    fontSize: 16,
+    marginBottom: 16,
     color: '#474740',
   },
   button: {
@@ -82,6 +91,11 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  contactSeller: {
+    color: 'blue',
     fontSize: 18,
     fontWeight: 'bold',
   },

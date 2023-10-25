@@ -5,7 +5,12 @@ const Book = require('../models/book'); // Import the Book model
 // Create a new book listing
 router.post('/add', async (req, res) => {
   try {
-    const bookData = req.body;
+    const { sellerName, sellerId, ...bookData } = req.body; // Extract sellerName and sellerId
+
+    // Add the seller's name and ID to the book data
+    bookData.sellerName = sellerName;
+    bookData.sellerId = sellerId;
+
     const newBook = new Book(bookData);
 
     const savedBook = await newBook.save();
@@ -44,5 +49,26 @@ async function getBook(req, res, next) {
   res.book = book;
   next();
 }
+
+
+//get seller details by id
+router.get('/:id', getBook, getSellerDetails, (req, res) => {
+  const { book, seller } = res;
+  // Combine the book and seller data as needed
+  res.json({ book, seller });
+});
+
+// Middleware to retrieve seller details
+async function getSellerDetails(req, res, next) {
+  const { sellerId } = res.book;
+  try {
+    const response = await axios.get(`http://localhost:3000/get-seller-by-id/${sellerId}`);
+    res.seller = response.data;
+    next();
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+}
+
 
 module.exports = router;

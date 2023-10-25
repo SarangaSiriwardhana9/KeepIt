@@ -8,6 +8,8 @@ import BookDetailScreen from '../src/screens/BookDetailScreen';
 import UpdateProfileDetails from '../src/screens/UpdateProfileDetails';
 import BottomTabNavigator from './BottomTabNavigator';
 import UpdatePaymentDetails from '../src/screens/UpdatePaymentDetails';
+import AddNewBook from '../src/screens/AddNewBook';
+import SellerContactScreen from '../src/screens/SellerContactScreen';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +23,8 @@ const StackNavigator = () => (
         <Stack.Screen name="BookDetail" component={BookDetailScreen} options={{ headerShown: false }} />
         <Stack.Screen name="UpdateProfileDetails" component={UpdateProfileDetails} options={{ headerShown: false }} />
         <Stack.Screen name="UpdatePaymentDetails" component={UpdatePaymentDetails} options={{ headerShown: false }} />
+        <Stack.Screen name="SellerContact" component={SellerContactScreen} options={{ headerShown: false }} />
+
       </Stack.Navigator>
 
   </AuthProvider>

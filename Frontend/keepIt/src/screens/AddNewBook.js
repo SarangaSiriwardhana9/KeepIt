@@ -59,6 +59,8 @@ const AddNewBook = () => {
         coverPhoto,
         secondaryImage,
         thirdImage,
+        sellerName: userName, // Set the seller's name
+        sellerId: userId, // Set the seller's ID
       };
 
       const response = await axios.post('http://localhost:3000/book/add', bookData);
@@ -76,8 +78,7 @@ const AddNewBook = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.nametext} >Welcome, {userName}!</Text>
-      <Text style={styles.nametext} >Your MongoDB ID: {userId}</Text>
+     
       <Text style={styles.header}>Add a Book</Text>
 
       <Text style={styles.label}>Cover Image :</Text>
@@ -166,6 +167,7 @@ const AddNewBook = () => {
     </ScrollView>
   );
 };
+
 
 export default AddNewBook;
 

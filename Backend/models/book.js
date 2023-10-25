@@ -1,13 +1,6 @@
 const mongoose = require('mongoose');
 
 const bookSchema = new mongoose.Schema({
-  seller: {
-    _id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User', // Reference the User model
-    },
-    fullName: String,
-  },
   bookName: String,
   authorName: String,
   description: String,
@@ -16,6 +9,8 @@ const bookSchema = new mongoose.Schema({
   coverPhoto: String,
   secondaryImage: String,
   thirdImage: String,
+  sellerName: String,  // New field for seller name
+  sellerId: mongoose.Schema.Types.ObjectId,  // New field for seller ID
 });
 
 const Book = mongoose.model('Book', bookSchema);

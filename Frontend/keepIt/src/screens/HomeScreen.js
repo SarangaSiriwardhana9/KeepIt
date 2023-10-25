@@ -33,11 +33,7 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-  <View>
-      <Text style={styles.nametext} >Welcome, {userName}!</Text>
-      <Text style={styles.nametext} >Your MongoDB ID: {userId}</Text>
-      {/* Add the rest of your home screen content */}
-    </View>
+
       
       <FlatList
         data={createPairs(books)}
