@@ -171,26 +171,26 @@ router.get('/get-user-by-email', async (req, res) => {
   }
 });
 
-// get user by id
-router.get('/get-seller-by-id/:id', getSellerById, (req, res) => {
-  res.json(res.seller);
-});
 
-// Middleware to retrieve seller by _id
-async function getSellerById(req, res, next) {
-  const { id } = req.params;
+// Retrieve seller data by sellerId
+router.get('/seller/:sellerId', async (req, res) => {
   try {
-    const seller = await User.findById(id);
+    const sellerId = req.params.sellerId;
+    
+    // Query the database to find the user with the given sellerId
+    const sellerData = await User.findOne({ _id: sellerId });
 
-    if (!seller) {
+    if (!sellerData) {
       return res.status(404).json({ message: 'Seller not found' });
     }
 
-    res.seller = seller;
-    next();
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
+    // Send the seller data as a JSON response
+    res.status(200).json(sellerData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
   }
-}
+});
+
 
 module.exports = router;

@@ -7,11 +7,13 @@ const BookDetailsScreen = ({ route }) => {
   const { book } = route.params;
   const navigation = useNavigation();
 
-  // Function to navigate to SellerContactScreen
-  const navigateToSellerContact = () => {
-    navigation.navigate('SellerContactScreen');
+  const contactSeller = () => {
+    // Navigate to the SellerContactScreen with the seller name and seller ID as params
+    navigation.navigate('SellerContactScreen', {
+      sellerName: book.sellerName,
+      sellerId: book.sellerId,
+    });
   };
-
   return (
     <ScrollView style={styles.container}>
       <Swiper style={styles.swiperContainer} showsButtons={true} showsPagination={false}>
@@ -25,7 +27,7 @@ const BookDetailsScreen = ({ route }) => {
         <Text style={styles.price}>Price: Rs. {book.price}</Text>
         <Text style={styles.description}>Description: {book.description}</Text>
         <Text style={styles.SellerInfo}>Seller: {book.sellerName}</Text>
-        <TouchableOpacity onPress={navigateToSellerContact}>
+        <TouchableOpacity onPress={contactSeller}>
           <Text style={styles.contactSeller}>Contact Seller</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button}>

@@ -51,24 +51,6 @@ async function getBook(req, res, next) {
 }
 
 
-//get seller details by id
-router.get('/:id', getBook, getSellerDetails, (req, res) => {
-  const { book, seller } = res;
-  // Combine the book and seller data as needed
-  res.json({ book, seller });
-});
-
-// Middleware to retrieve seller details
-async function getSellerDetails(req, res, next) {
-  const { sellerId } = res.book;
-  try {
-    const response = await axios.get(`http://localhost:3000/get-seller-by-id/${sellerId}`);
-    res.seller = response.data;
-    next();
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-}
 
 
 module.exports = router;
