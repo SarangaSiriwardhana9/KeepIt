@@ -49,6 +49,24 @@ async function getBook(req, res, next) {
   res.book = book;
   next();
 }
+// Add this route to routes/book.js
+// Update book availability to false by book ID
+router.put('/setUnavailable/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (!book) {
+      return res.status(404).json({ message: 'Book not found' });
+    }
+
+    // Update the book's isAvailable field to false
+    book.isAvailable = false;
+
+    const updatedBook = await book.save();
+    res.json(updatedBook);
+  } catch (err) {
+    res.status(400).json({ message: err.message });
+  }
+});
 
 
 

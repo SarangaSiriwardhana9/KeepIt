@@ -11,6 +11,10 @@ const bookSchema = new mongoose.Schema({
   thirdImage: String,
   sellerName: String,  
   sellerId: mongoose.Schema.Types.ObjectId,  
+  isAvailable: {
+    type: Boolean,
+    default: true, // Set the default value to true
+  },
 });
 
 const Book = mongoose.model('Book', bookSchema);

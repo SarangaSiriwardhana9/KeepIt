@@ -3,6 +3,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../src/screens/HomeScreen';
 import BookDetailScreen from '../src/screens/BookDetailScreen';
 import SellerContactScreen from '../src/screens/SellerContactScreen';
+import AddPaymentScreen from '../src/screens/AddPaymentScreen';
 
 const HomeStack = createStackNavigator();
 
@@ -23,6 +24,12 @@ const HomeStackNavigator = () => (
       component={SellerContactScreen}
       options={{ headerShown: false }}
     />
+    <HomeStack.Screen
+      name="AddPaymentScreen"
+      component={AddPaymentScreen}
+      options={{ headerShown: false }}
+    />
+
   </HomeStack.Navigator>
 );
 

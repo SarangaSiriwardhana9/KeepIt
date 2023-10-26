@@ -1,19 +1,62 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import Swiper from 'react-native-swiper';
 import { useNavigation } from '@react-navigation/native';
+import { useAuth } from '../../context/AuthContext';
+import Axios from 'axios';
 
 const BookDetailsScreen = ({ route }) => {
   const { book } = route.params;
   const navigation = useNavigation();
+  const { userId } = useAuth();
+  const [addedToCart, setAddedToCart] = useState(false);
+
+  useEffect(() => {
+    // Check if the book is already in the cart when the component mounts
+    Axios.get(`http://localhost:3000/cart/user/${userId}`)
+      .then((response) => {
+        const cartItems = response.data;
+        const bookInCart = cartItems.find((item) => item.bookId === book._id);
+        if (bookInCart) {
+          setAddedToCart(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, [userId, book._id]);
 
   const contactSeller = () => {
-    // Navigate to the SellerContactScreen with the seller name and seller ID as params
     navigation.navigate('SellerContactScreen', {
       sellerName: book.sellerName,
       sellerId: book.sellerId,
     });
   };
+
+  const addToCart = () => {
+    Axios.post('http://localhost:3000/cart/add-to-cart', {
+      bookId: book._id,
+      userId,
+    })
+      .then(() => {
+        setAddedToCart(true);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const buyNow = () => {
+    navigation.navigate('AddPaymentScreen', {
+      sellerId: book.sellerId,
+      bookName: book.bookName,
+      bookPrice: book.price,
+      bookId: book._id,
+      userId,
+    
+    });
+  };
+
   return (
     <ScrollView style={styles.container}>
       <Swiper style={styles.swiperContainer} showsButtons={true} showsPagination={false}>
@@ -22,27 +65,34 @@ const BookDetailsScreen = ({ route }) => {
         <Image source={{ uri: book.thirdImage }} style={styles.image} />
       </Swiper>
       <View style={styles.detailsContainer}>
+    
         <Text style={styles.title}>Book Name: {book.bookName}</Text>
+        <Text style={styles.sellerId}>Seller ID: {book.sellerId}</Text>
         <Text style={styles.author}>Author: {book.authorName}</Text>
         <Text style={styles.price}>Price: Rs. {book.price}</Text>
         <Text style={styles.description}>Description: {book.description}</Text>
         <Text style={styles.SellerInfo}>Seller: {book.sellerName}</Text>
-        <TouchableOpacity onPress={contactSeller}>
-          <Text style={styles.contactSeller}>Contact Seller</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Add to Cart</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.buyNowButton} onPress={buyNow}>
+            <Text style={styles.buttonText}>Buy Now</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
+            <Text style={styles.buttonText}>Add to Cart</Text>
+          </TouchableOpacity>
+        </View>
+        {addedToCart && (
+          <Text style={styles.addedToCartText}>Added to Cart</Text>
+        )}
       </View>
     </ScrollView>
   );
 };
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#f0f0f0',
+    height: '100%',
   },
   swiperContainer: {
     height: 200,
@@ -81,21 +131,35 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     color: '#474740',
   },
-  button: {
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  buyNowButton: {
     backgroundColor: '#007BFF',
     padding: 16,
     borderRadius: 8,
     alignItems: 'center',
+    flex: 1,
+    marginRight: 8,
+  },
+  addToCartButton: {
+    backgroundColor: '#007BFF',
+    padding: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    flex: 1,
+    marginLeft: 8,
   },
   buttonText: {
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
   },
-  contactSeller: {
-    color: 'blue',
-    fontSize: 18,
-    fontWeight: 'bold',
+  addedToCartText: {
+    // Style for the "Added to Cart" text
+    // You can adjust the styling as needed
   },
 });
 

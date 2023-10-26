@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const userRoutes = require("./routes/user");
 const bookRoutes = require("./routes/book");
+const cartRoutes = require("./routes/cart");
+const orderRoutes = require("./routes/order");
 
 
 const app = express();
@@ -34,8 +36,11 @@ app.use("/book", bookRoutes);
 // Use the user routes
 app.use("/user", userRoutes);
 
+// Use the cart routes
+app.use("/cart", cartRoutes);
 
-
+//use the order routes
+app.use("/order", orderRoutes);
 
 
 app.listen(port, () => {

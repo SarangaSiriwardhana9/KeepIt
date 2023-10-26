@@ -193,4 +193,39 @@ router.get('/seller/:sellerId', async (req, res) => {
 });
 
 
+// Get all cart items for a specific user
+router.get('/user/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const bookId = req.query.bookId; // Get the book's _id from the query string
+
+    // Find all cart items that belong to the specified user
+    const cartItems = await CartItem.find({ userId }).populate('book');
+
+    // Check if the book is already in the user's cart
+    const isBookInCart = cartItems.some((item) => item.book._id.toString() === bookId);
+
+    res.json({ cartItems, isBookInCart });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Add this route to get user details by userId
+router.get('/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
+});
+
 module.exports = router;

@@ -39,6 +39,7 @@ const BottomTabNavigator = () => (
       name="Cart"
       component={CartScreen}
       options={{
+        headerShown: false,
         tabBarIcon: ({ color, size }) => (
           <Ionicons name="cart-outline" color={color} size={size} />
         ),
