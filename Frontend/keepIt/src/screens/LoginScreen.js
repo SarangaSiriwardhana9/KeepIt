@@ -1,6 +1,6 @@
-import React, { useContext, useState } from 'react';
+import React, {useState} from 'react';
 import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {
   View,
   Text,
@@ -12,15 +12,15 @@ import {
   StyleSheet,
   Modal,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuth } from '../../context/AuthContext';
-import { themeColors } from '../theme';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {useAuth} from '../../context/AuthContext';
+import {themeColors} from '../theme';
 import backButton from '../assets/icons/back-button.png';
 import LoginSuccessAlert from '../components/alerts/LoginSuccessAlert';
 import LoginErrorAlert from '../components/alerts/LoginErrorAlert';
 const LoginScreen = () => {
   const navigation = useNavigation();
-  const { login } = useAuth();
+  const {login} = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSuccessAlertVisible, setIsSuccessAlertVisible] = useState(false);
@@ -52,7 +52,7 @@ const LoginScreen = () => {
     const apiUrl = 'http://localhost:3000/user/login'; // Replace with your backend URL
 
     try {
-      const response = await axios.post(apiUrl, { email, password });
+      const response = await axios.post(apiUrl, {email, password});
 
       if (response.status === 200) {
         login(response.data.user);
@@ -70,8 +70,8 @@ const LoginScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
+      <SafeAreaView style={{flex: 1}}>
+        <View>
           <SafeAreaView style={styles.container}>
             <View style={styles.topSection}>
               <TouchableOpacity
@@ -88,43 +88,49 @@ const LoginScreen = () => {
             </View>
           </SafeAreaView>
           <View style={styles.bottomSection}>
-            <View style={styles.formInput}>
-              <Text style={styles.formLabel}>Email Address</Text>
+            <View style={styles.formInput} className="flex flex-col gap-4 ">
+              <Text className="text-base text-black ml-3">Email Address</Text>
               <TextInput
                 value={email}
-                style={styles.textInput}
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={text => setEmail(text)}
                 placeholder="email"
+                className="border bg-white rounded-2xl pl-4"
               />
             </View>
-            <View style={styles.formInput}>
-              <Text style={styles.formLabel}>Password</Text>
+            <View style={styles.formInput} className="flex flex-col gap-4 ">
+              <Text className="text-base text-black ml-3">Password</Text>
               <TextInput
                 value={password}
-                onChangeText={(text) => setPassword(text)}
-                style={styles.textInput}
+                onChangeText={text => setPassword(text)}
                 secureTextEntry
                 placeholder="password"
+                className="border bg-white rounded-2xl pl-4"
               />
               <TouchableOpacity style={styles.forgotPassword}>
-                <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+                <Text className="text-[#55898D]">Forgot Password?</Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-              <Text style={styles.loginButtonText}>Login</Text>
+            <TouchableOpacity  onPress={handleLogin} className="bg-[#55898D] flex flex-row justify-center items-center py-3 rounded-3xl">
+              <Text className="font-semibold text-white text-lg" >Login</Text>
             </TouchableOpacity>
             <Text style={styles.orText}>Or</Text>
             <View style={styles.bottomSectionLinks}>
               <Text style={styles.signUpText}>Don't have an account?</Text>
               <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                <Text style={styles.signUpLink}> Sign Up</Text>
+                <Text  className="text-[#55898D]"> Sign Up</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
       </SafeAreaView>
-      <LoginSuccessAlert isVisible={isSuccessAlertVisible} onClose={closeSuccessAlert} />
-      <LoginErrorAlert isVisible={isErrorAlertVisible} onClose={closeErrorAlert} />
+      <LoginSuccessAlert
+        isVisible={isSuccessAlertVisible}
+        onClose={closeSuccessAlert}
+      />
+      <LoginErrorAlert
+        isVisible={isErrorAlertVisible}
+        onClose={closeErrorAlert}
+      />
     </ScrollView>
   );
 };
@@ -132,7 +138,6 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: themeColors.bg,
-    
   },
   topSection: {
     flex: 1,
@@ -160,13 +165,14 @@ const styles = StyleSheet.create({
     height: 200,
   },
   bottomSection: {
-    height: 500,
+    height: 600,
     borderTopLeftRadius: 50,
     borderTopRightRadius: 50,
     flex: 1,
     backgroundColor: 'white',
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 60,
+    marginTop: 20,
   },
   formInput: {
     marginBottom: 20,
