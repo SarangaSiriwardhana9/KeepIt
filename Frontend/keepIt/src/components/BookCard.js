@@ -5,9 +5,9 @@ const BookCard = ({ book }) => {
   return (
     <View style={styles.card}>
       <Image source={{ uri: book.coverPhoto }} style={styles.coverImage} />
-      <Text style={styles.title}>{book.bookName}</Text>
-      <Text style={styles.author}>{book.authorName}</Text>
-      <Text style={styles.price}>{`Price: Rs. ${book.price}`}</Text>
+      <Text className="text-lg text-black">{book.bookName}</Text>
+      <Text className="text-base text-gray-500">{book.authorName}</Text>
+      <Text className="text-[#55898D] text-base">{`Price: Rs. ${book.price}`}</Text>
     </View>
   );
 };

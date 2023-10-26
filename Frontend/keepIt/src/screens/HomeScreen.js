@@ -39,7 +39,7 @@ const HomeScreen = () => {
         data={createPairs(books)}
         keyExtractor={(item, index) => `pair-${index}`}
         renderItem={({ item }) => (
-          <View style={styles.cardPair}>
+          <View className="flex flex-row justify-between gap-2 mt-3">
             {item.map((book) => (
               <TouchableOpacity
                 key={book._id}
