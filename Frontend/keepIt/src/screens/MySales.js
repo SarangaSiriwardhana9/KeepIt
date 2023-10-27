@@ -43,7 +43,7 @@ const MySales = ({ navigation }) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text style={styles.HeaderTxt}>My Sales</Text>
+        <Text className="my-4 text-center text-xl font-semibold  text-[#55898D]">My Sales</Text>
         {loading ? (
           <Text>Loading...</Text>
         ) : sales.length > 0 ? (
