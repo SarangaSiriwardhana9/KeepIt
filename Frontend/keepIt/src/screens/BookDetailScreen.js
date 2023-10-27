@@ -68,8 +68,7 @@ const BookDetailsScreen = ({route}) => {
       <Swiper
         style={styles.swiperContainer}
         showsButtons={true}
-        showsPagination={false}
-        >
+        showsPagination={false}>
         <Image source={{uri: book.coverPhoto}} style={styles.image} />
         <Image source={{uri: book.secondaryImage}} style={styles.image} />
         <Image source={{uri: book.thirdImage}} style={styles.image} />
@@ -91,16 +90,20 @@ const BookDetailsScreen = ({route}) => {
           <TouchableOpacity
             className="bg-[#55898D] py-4 w-full flex flex-row justify-center rounded-xl"
             onPress={buyNow}>
-            <Text className="text-white text-base font-semibold" >Buy Now</Text>
+            <Text className="text-white text-base font-semibold">Buy Now</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="bg-[#fbbf24] py-4 w-full flex flex-row justify-center rounded-xl"
             onPress={addToCart}>
-            <Text className="text-black text-base font-semibold">Add to Cart</Text>
+            <Text className="text-black text-base font-semibold">
+              Add to Cart
+            </Text>
           </TouchableOpacity>
         </View>
         {addedToCart && (
-          <Text className="text-black text-base font-semibold">Added to Cart</Text>
+          <Text className="text-black text-base font-semibold">
+            Added to Cart
+          </Text>
         )}
       </View>
     </ScrollView>
