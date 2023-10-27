@@ -13,10 +13,10 @@ const MyOrderCard = ({ order, navigation }) => {
         <View style={styles.imageContainer}>
           <Image style={styles.bookImage} source={{ uri: order.bookCover }} />
         </View>
-        <View style={styles.detailsContainer}>
-          <Text style={styles.title}>{order.bookName}</Text>
-          <Text style={styles.author}>Author: {order.authorName}</Text>
-          <Text style={styles.price}>RS. {order.bookPrice}</Text>
+        <View className="flex flex-col justify-center min-w-[100px]">
+          <Text className="text-[#55898D] text-lg font-semibold whitespace-nowrap">{order.bookName}</Text>
+          <Text className="text-black text-base ">By {order.authorName}</Text>
+          <Text className="text-black text-base ">RS. {order.bookPrice}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -35,6 +35,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+    display: 'flex',
+    justifyContent: 'space-between',
   },
   imageContainer: {
     marginRight: 10,

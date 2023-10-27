@@ -1,11 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, ScrollView, TouchableOpacity, Button } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Button,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 
-const SellsDetailsScreen = ({ route }) => {
-  const { order } = route.params;
+const SellsDetailsScreen = ({route}) => {
+  const {order} = route.params;
   const [bookData, setBookData] = useState(null);
   const [isReceived, setIsReceived] = useState(false); // Initialize isReceived as false
   const [isAccepted, setIsAccepted] = useState(order.isAccepted || false); // Initialize isAccepted based on order data
@@ -16,40 +24,39 @@ const SellsDetailsScreen = ({ route }) => {
   useEffect(() => {
     axios
       .get(`http://localhost:3000/book/details/${order.bookId}`)
-      .then((response) => {
+      .then(response => {
         setBookData(response.data);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching book data:', error);
       });
 
-        // Fetch isAccepted and isDispatched values
+    // Fetch isAccepted and isDispatched values
     axios
-    .get(`http://localhost:3000/order/isAccepted/${order._id}`)
-    .then((response) => {
-      setIsAccepted(response.data.isAccepted);
-    })
-    .catch((error) => {
-      console.error('Error fetching isAccepted value:', error);
-    });
+      .get(`http://localhost:3000/order/isAccepted/${order._id}`)
+      .then(response => {
+        setIsAccepted(response.data.isAccepted);
+      })
+      .catch(error => {
+        console.error('Error fetching isAccepted value:', error);
+      });
 
-  axios
-    .get(`http://localhost:3000/order/isDispatched/${order._id}`)
-    .then((response) => {
-      setIsDispatched(response.data.isDispatched);
-    })
-    .catch((error) => {
-      console.error('Error fetching isDispatched value:', error);
-    });
-
+    axios
+      .get(`http://localhost:3000/order/isDispatched/${order._id}`)
+      .then(response => {
+        setIsDispatched(response.data.isDispatched);
+      })
+      .catch(error => {
+        console.error('Error fetching isDispatched value:', error);
+      });
 
     // Fetch the isReceived value for the order
     axios
       .get(`http://localhost:3000/order/isReceived/${order._id}`)
-      .then((response) => {
+      .then(response => {
         setIsReceived(response.data.isReceived);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error fetching isReceived value:', error);
       });
   }, [order]);
@@ -67,7 +74,7 @@ const SellsDetailsScreen = ({ route }) => {
       .then(() => {
         setIsAccepted(true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error marking order as accepted:', error);
       });
   };
@@ -78,58 +85,83 @@ const SellsDetailsScreen = ({ route }) => {
       .then(() => {
         setIsDispatched(true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error('Error marking order as dispatched:', error);
       });
   };
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>Sell Details</Text>
+      <Text className="my-4 text-center text-2xl font-semibold  text-[#55898D]">
+        Sell Details
+      </Text>
       {bookData && (
         <View style={styles.contentContainer}>
-          {bookData.coverPhoto && bookData.secondaryImage && bookData.thirdImage && (
-            <View style={styles.swiperContainer}>
-              <Swiper showsButtons={true} showsPagination={true}>
-                <Image source={{ uri: bookData.coverPhoto }} style={styles.image} />
-                <Image source={{ uri: bookData.secondaryImage }} style={styles.image} />
-                <Image source={{ uri: bookData.thirdImage }} style={styles.image} />
-              </Swiper>
-            </View>
-          )}
-          <Text style={styles.title}>order Id: {order._id}</Text>
+          {bookData.coverPhoto &&
+            bookData.secondaryImage &&
+            bookData.thirdImage && (
+              <View style={styles.swiperContainer}>
+                <Swiper showsButtons={true} showsPagination={true}>
+                  <Image
+                    source={{uri: bookData.coverPhoto}}
+                    style={styles.image}
+                  />
+                  <Image
+                    source={{uri: bookData.secondaryImage}}
+                    style={styles.image}
+                  />
+                  <Image
+                    source={{uri: bookData.thirdImage}}
+                    style={styles.image}
+                  />
+                </Swiper>
+              </View>
+            )}
+          <Text style={styles.title}>order Id: #{order._id}</Text>
           <Text style={styles.title}>{bookData.bookName}</Text>
           <Text style={styles.text}>Author: {bookData.authorName}</Text>
           <Text style={styles.text}>Description: {bookData.description}</Text>
           <Text style={styles.text}>Price: Rs. {bookData.price}</Text>
-          <Text style={styles.text}>Seller Name: {bookData.sellerName}</Text>
 
-          <View style={styles.statusContainer}>
-          <Text style={styles.statusText}>Order Status {order.status}</Text>
+          <Text className="my-4 text-center text-2xl font-semibold  text-[#55898D]">
+            Order Status {order.status}
+          </Text>
+          <View className="flex flex-col gap-4 mt-6 px-14 items-center">
             {isAccepted ? (
-              <Text style={styles.OrderAcceceptedText}>You already accepted order !</Text>
+              <Text className="text-center text-base text-[#0C356A]">
+                You already accepted order !✅
+              </Text>
             ) : (
-              <TouchableOpacity style={styles.acceceptedButton} onPress={handleOrderAccepted}>
-                <Text style={styles.orderAccectptedText}>Accept Order</Text>
+              <TouchableOpacity
+                className="bg-[#fbbf24] py-2 w-full flex flex-row justify-center rounded-xl"
+                onPress={handleOrderAccepted}>
+                <Text className="text-black text-base font-semibold">
+                  Accept Order
+                </Text>
               </TouchableOpacity>
             )}
 
             {isDispatched ? (
-              <Text style={styles.OrderDispatchedText}>Order dispatched already</Text>
+              <Text className="text-center text-base text-[#0C356A]">
+                Order dispatched already 🚚
+              </Text>
             ) : (
-              <TouchableOpacity style={styles.dispatchedButton} onPress={handleOrderDispatched}>
-                <Text style={styles.orderDispatchedText}>Dispatch Order</Text>
+              <TouchableOpacity
+                className="bg-[#fbbf24] py-2 w-full flex flex-row justify-center rounded-xl"
+                onPress={handleOrderDispatched}>
+                <Text className="text-black text-base font-semibold">
+                  Dispatch Order
+                </Text>
               </TouchableOpacity>
             )}
 
             {isReceived ? (
-              <Text style={styles.OrderReceivedText}>Order Received</Text>
+              <Text className="text-center text-base text-2xl font-semibold text-[#219C90]">
+                Order Received ✔️
+              </Text>
             ) : (
-              
               <Text style={styles.notReceivedText}>Order Not Received yet</Text>
-            
             )}
-         
           </View>
         </View>
       )}
@@ -152,8 +184,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     padding: 20,
-    
-    
   },
   swiperContainer: {
     height: 200,
@@ -161,11 +191,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 30,
     marginBottom: 20,
-
-    
   },
   image: {
-    
     width: '100%',
     height: '100%',
   },
@@ -202,7 +229,7 @@ const styles = StyleSheet.create({
   },
   OrderReceivedButton: {
     marginLeft: 80,
-    width : '50%',
+    width: '50%',
     backgroundColor: '#4287f5',
     padding: 10,
     borderRadius: 5,
@@ -230,7 +257,7 @@ const styles = StyleSheet.create({
   },
   acceceptedButton: {
     marginLeft: 80,
-    width : '50%',
+    width: '50%',
     backgroundColor: '#4287f5',
     padding: 10,
     borderRadius: 5,
@@ -239,7 +266,7 @@ const styles = StyleSheet.create({
   },
   dispatchedButton: {
     marginLeft: 80,
-    width : '50%',
+    width: '50%',
     backgroundColor: '#4287f5',
     padding: 10,
     borderRadius: 5,
@@ -247,24 +274,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   OrderAcceceptedText: {
-    textAlign : 'center',
+    textAlign: 'center',
     fontSize: 16,
     fontWeight: 'bold',
     color: '#3136E0',
     marginBottom: 10,
   },
   OrderDispatchedText: {
-    textAlign : 'center',
+    textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#3136E0',
     marginBottom: 10,
   },
   notReceivedText: {
-    textAlign : 'center',
+    textAlign: 'center',
     fontSize: 20,
     fontWeight: 'bold',
     color: '#E37A2C',
   },
-  
 });

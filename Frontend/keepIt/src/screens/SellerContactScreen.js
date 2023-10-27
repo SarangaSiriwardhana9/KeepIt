@@ -21,21 +21,21 @@ const SellerContactScreen = ({ route }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>Contact Seller</Text>
+        <Text className="my-4 text-center text-2xl font-semibold  text-[#55898D]">Contact Seller</Text>
       </View>
       
       {sellerData && (
         <View style={styles.sellerInfoContainer}>
           <Image source={{ uri: sellerData.profilePicture }} style={styles.profileImage} />
-          <Text style={styles.sellerName}>{sellerData.fullName}</Text>
-          <Text style={styles.sellerDetail}>Email: {sellerData.email}</Text>
-          <Text style={styles.sellerDetail}>Phone: {sellerData.mobileNo}</Text>
-          <Text style={styles.sellerDetail}>Address: {sellerData.address}</Text>
+          <Text className="text-[#55898D] font-semibold text-2xl">{sellerData.fullName}</Text>
+          <Text className="text-base text-black">📧 {sellerData.email}</Text>
+          <Text className="text-base text-black">☎️ {sellerData.mobileNo}</Text>
+          <Text className="text-base text-black">🗺️ {sellerData.address}</Text>
           {/* Include other seller details as needed */}
         </View>
         )}
 
-      <TouchableOpacity style={styles.contactButton}>
+      <TouchableOpacity className="flex flex-row justify-center items-center mx-10 mt-4 py-4 rounded-xl bg-[#55898D]">
         <Text style={styles.contactButtonText}>Contact Seller</Text>
       </TouchableOpacity>
     </ScrollView>
