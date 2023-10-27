@@ -1,16 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity, StyleSheet } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+} from 'react-native';
 import Swiper from 'react-native-swiper';
-import { useNavigation } from '@react-navigation/native';
-import { useAuth } from '../../context/AuthContext';
+import {useNavigation} from '@react-navigation/native';
+import {useAuth} from '../../context/AuthContext';
 import Axios from 'axios';
 
-const BookDetailsScreen = ({ route }) => {
-  const { book } = route.params;
+const BookDetailsScreen = ({route}) => {
+  const {book} = route.params;
   const navigation = useNavigation();
-  const { userId } = useAuth();
+  const {userId} = useAuth();
   const [addedToCart, setAddedToCart] = useState(false);
 
+  useEffect(() => {
+    // Check if the book is already in the cart when the component mounts
+    Axios.get(`http://localhost:3000/cart/user/${userId}`)
+      .then(response => {
+        const cartItems = response.data;
+        const bookInCart = cartItems.find(item => item.bookId === book._id);
+        if (bookInCart) {
+          setAddedToCart(true);
+        }
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [userId, book._id]);
 
   const contactSeller = () => {
     navigation.navigate('SellerContactScreen', {
@@ -27,7 +48,7 @@ const BookDetailsScreen = ({ route }) => {
       .then(() => {
         setAddedToCart(true);
       })
-      .catch((error) => {
+      .catch(error => {
         console.error(error);
       });
   };
@@ -39,43 +60,50 @@ const BookDetailsScreen = ({ route }) => {
       bookPrice: book.price,
       bookId: book._id,
       userId,
-    
     });
   };
 
   return (
     <ScrollView style={styles.container}>
-      <Swiper style={styles.swiperContainer} showsButtons={true} showsPagination={false}>
-        <Image source={{ uri: book.coverPhoto }} style={styles.image} />
-        <Image source={{ uri: book.secondaryImage }} style={styles.image} />
-        <Image source={{ uri: book.thirdImage }} style={styles.image} />
+      <Swiper
+        style={styles.swiperContainer}
+        showsButtons={true}
+        showsPagination={false}>
+        <Image source={{uri: book.coverPhoto}} style={styles.image} />
+        <Image source={{uri: book.secondaryImage}} style={styles.image} />
+        <Image source={{uri: book.thirdImage}} style={styles.image} />
       </Swiper>
-      <View style={styles.detailsContainer}>
-    
-        <Text style={styles.title}>Book Name: {book.bookName}</Text>
-        
-        <Text style={styles.author}>Author: {book.authorName}</Text>
-        <Text style={styles.price}>Price: Rs. {book.price}</Text>
-        <Text style={styles.description}>Description: {book.description}</Text>
-        <Text style={styles.SellerInfo}>Seller: {book.sellerName}</Text>
-        <TouchableOpacity style={styles.contactSeller} onPress={contactSeller}>
-            <Text style={styles.buttonText}>Contact Seller</Text>
+      <View className="flex flex-col px-4 gap-2">
+        <Text className="text-[#55898D] font-semibold text-3xl">
+          {book.bookName}
+        </Text>
+        <Text style={styles.sellerId}>Seller ID: {book.sellerId}</Text>
+        <Text className="text-base text-black">by {book.authorName}</Text>
+        <Text className="text-teal-800 text-xl">Rs. {book.price}.00</Text>
+        <Text className="text-base text-black leading-normal whitespace-nowrap">
+          {book.description}
+        </Text>
+        <Text className="text-black text-base font-semibold">
+          Sell by : {book.sellerName}
+        </Text>
+        <View className="flex flex-col justify-center items-center gap-2 w-full pt-4 pr-2">
+          <TouchableOpacity
+            className="bg-[#55898D] py-4 w-full flex flex-row justify-center rounded-xl"
+            onPress={buyNow}>
+            <Text className="text-white text-base font-semibold">Buy Now</Text>
           </TouchableOpacity>
-
-        <View style={styles.buttonContainer}>
-
-
-
-         
-          <TouchableOpacity style={styles.buyNowButton} onPress={buyNow}>
-            <Text style={styles.buttonText}>Buy Now</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.addToCartButton} onPress={addToCart}>
-            <Text style={styles.buttonText}>Add to Cart</Text>
+          <TouchableOpacity
+            className="bg-[#fbbf24] py-4 w-full flex flex-row justify-center rounded-xl"
+            onPress={addToCart}>
+            <Text className="text-black text-base font-semibold">
+              Add to Cart
+            </Text>
           </TouchableOpacity>
         </View>
         {addedToCart && (
-          <Text style={styles.addedToCartText}>Added to Cart</Text>
+          <Text className="text-black text-base font-semibold">
+            Added to Cart
+          </Text>
         )}
       </View>
     </ScrollView>

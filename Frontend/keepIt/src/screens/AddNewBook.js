@@ -1,24 +1,32 @@
-import React, { useState } from "react";
-import { Text, View, StyleSheet, TextInput, TouchableOpacity, Image, ScrollView } from "react-native";
+import React, {useState} from 'react';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from 'react-native';
 import ImagePicker from 'react-native-image-crop-picker';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
-import { useAuth } from '../../context/AuthContext';
+import {useAuth} from '../../context/AuthContext';
 
 const AddNewBook = () => {
-  const { userName, userId } = useAuth();
+  const {userName, userId} = useAuth();
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [secondaryImage, setSecondaryImage] = useState(null);
   const [thirdImage, setThirdImage] = useState(null);
   const [bookDetails, setBookDetails] = useState({
-    bookName: "",
-    authorName: "",
-    description: "",
-    pages: "",
-    price: "",
+    bookName: '',
+    authorName: '',
+    description: '',
+    pages: '',
+    price: '',
   });
 
-  const handleImageSelection = async (imageType) => {
+  const handleImageSelection = async imageType => {
     try {
       const image = await ImagePicker.openPicker({
         width: 300,
@@ -63,11 +71,13 @@ const AddNewBook = () => {
         sellerId: userId, // Set the seller's ID
       };
 
-      const response = await axios.post('http://localhost:3000/book/add', bookData);
+      const response = await axios.post(
+        'http://localhost:3000/book/add',
+        bookData,
+      );
 
       if (response.status === 200) {
         console.log('Book data sent successfully.');
-        
       } else {
         console.error('Error sending book data:', response.data.message);
       }
@@ -78,16 +88,14 @@ const AddNewBook = () => {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-     
-      <Text style={styles.header}>Add a Book</Text>
+      <Text className="text-center mb-4 text-2xl font-bold  text-[#55898D]">Add a Book</Text>
 
       <Text style={styles.label}>Cover Image :</Text>
       <TouchableOpacity
         style={styles.imageContainer}
-        onPress={() => handleImageSelection('cover')}
-      >
+        onPress={() => handleImageSelection('cover')}>
         {coverPhoto ? (
-          <Image source={{ uri: coverPhoto }} style={styles.image} />
+          <Image source={{uri: coverPhoto}} style={styles.image} />
         ) : (
           <Text style={styles.imageText}>Select Cover Photo</Text>
         )}
@@ -97,10 +105,9 @@ const AddNewBook = () => {
       <View style={styles.horizontalImages}>
         <TouchableOpacity
           style={styles.imageContainerSmall}
-          onPress={() => handleImageSelection('secondary')}
-        >
+          onPress={() => handleImageSelection('secondary')}>
           {secondaryImage ? (
-            <Image source={{ uri: secondaryImage }} style={styles.imageSmall} />
+            <Image source={{uri: secondaryImage}} style={styles.imageSmall} />
           ) : (
             <Text style={styles.imageText}>Select Secondary Image</Text>
           )}
@@ -108,10 +115,9 @@ const AddNewBook = () => {
 
         <TouchableOpacity
           style={styles.imageContainerSmall}
-          onPress={() => handleImageSelection('third')}
-        >
+          onPress={() => handleImageSelection('third')}>
           {thirdImage ? (
-            <Image source={{ uri: thirdImage }} style={styles.imageSmall} />
+            <Image source={{uri: thirdImage}} style={styles.imageSmall} />
           ) : (
             <Text style={styles.imageText}>Select Third Image</Text>
           )}
@@ -120,145 +126,144 @@ const AddNewBook = () => {
 
       <Text style={styles.label}>Book Name :</Text>
       <TextInput
-        style={styles.input}
+        className="border border-[#55898D] bg-white rounded-lg pl-4 mx-4"
         placeholder="Book Name"
-        onChangeText={(value) => handleInputChange('bookName', value)}
+        onChangeText={value => handleInputChange('bookName', value)}
         value={bookDetails.bookName}
       />
 
       <Text style={styles.label}>Author Name :</Text>
       <TextInput
-        style={styles.input}
+        className="border border-[#55898D] bg-white rounded-lg pl-4 mx-4"
         placeholder="Author Name"
-        onChangeText={(value) => handleInputChange('authorName', value)}
+        onChangeText={value => handleInputChange('authorName', value)}
         value={bookDetails.authorName}
       />
 
       <Text style={styles.label}>Description :</Text>
       <TextInput
-        style={styles.descriptionInput}
+        className="border border-[#55898D] bg-white flex flex-col items-start rounded-lg pl-4 mx-4 h-[150px]"
         placeholder="Description"
-        onChangeText={(value) => handleInputChange('description', value)}
+        onChangeText={value => handleInputChange('description', value)}
         value={bookDetails.description}
         multiline
       />
 
       <Text style={styles.label}>Number of Pages :</Text>
       <TextInput
-        style={styles.input}
+        className="border border-[#55898D] bg-white rounded-lg pl-4 mx-4"
         placeholder="Number of Pages"
-        onChangeText={(value) => handleInputChange('pages', value)}
+        onChangeText={value => handleInputChange('pages', value)}
         value={bookDetails.pages}
         keyboardType="numeric"
       />
 
       <Text style={styles.label}>Price :</Text>
       <TextInput
-        style={styles.input}
+        className="border border-[#55898D] bg-white rounded-lg pl-4 mx-4"
         placeholder="Price in Rs"
-        onChangeText={(value) => handleInputChange('price', value)}
+        onChangeText={value => handleInputChange('price', value)}
         value={bookDetails.price}
         keyboardType="numeric"
       />
 
-      <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+      <TouchableOpacity
+        className="bg-[#55898D] flex flex-row justify-center items-center py-3 mt-8 rounded-3xl"
+        onPress={handleSubmit}>
         <Text style={styles.addButtonLabel}>Next step</Text>
       </TouchableOpacity>
     </ScrollView>
   );
 };
 
-
 export default AddNewBook;
-
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     padding: 20,
   },
   header: {
-    alignContent : 'center',
+    alignContent: 'center',
     fontSize: 24,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 20,
-    color: "#333",
+    color: '#333',
   },
   imageContainer: {
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 150,
     marginBottom: 10,
     borderRadius: 10,
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     borderRadius: 10,
   },
   imageText: {
     fontSize: 16,
-    color: "#777",
+    color: '#777',
   },
   label: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginBottom: 5,
-    color: "#333",
+    color: '#333',
     marginTop: 10,
     marginBottom: 10,
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
     fontSize: 16,
-    color: "#666",
+    color: '#666',
   },
   descriptionInput: {
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
     fontSize: 16,
-    color: "#666",
-    height: 150, 
+    color: '#666',
+    height: 150,
   },
   addButton: {
-    backgroundColor: "#007BFF",
+    backgroundColor: '#007BFF',
     padding: 15,
     borderRadius: 5,
-    alignItems: "center",
+    alignItems: 'center',
   },
   addButtonLabel: {
     fontSize: 18,
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
   },
   horizontalImages: {
-    flexDirection: "row", // Arrange images horizontally
-    justifyContent: "space-between", // Space between images
+    flexDirection: 'row', // Arrange images horizontally
+    justifyContent: 'space-between', // Space between images
     marginBottom: 20,
   },
   imageContainerSmall: {
-    backgroundColor: "#f0f0f0",
-    justifyContent: "center",
-    alignItems: "center",
+    backgroundColor: '#f0f0f0',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 100, // Decrease the height for secondary and third images
-    width: "45%", // Adjust the width to fit two images in a row
+    width: '45%', // Adjust the width to fit two images in a row
     borderRadius: 10,
   },
   imageSmall: {
-    width: "100%",
-    height: "100%",
+    width: '100%',
+    height: '100%',
     borderRadius: 10,
   },
   nametext: {
     color: '#333333',
-  
   },
 });

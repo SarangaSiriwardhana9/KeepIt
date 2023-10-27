@@ -1,61 +1,49 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 
-const BookCard = ({ book, navigation }) => {
-  const handleCardPress = () => {
-    navigation.navigate('BookDetail', { book });
-  };
-
+const BookCard = ({ book }) => {
   return (
-    <TouchableOpacity onPress={handleCardPress}>
-      <View style={styles.card}>
-        <Image source={{ uri: book.coverPhoto }} style={styles.coverImage} />
-        <Text numberOfLines={1} style={styles.title}>
-          {book.bookName}
-        </Text>
-        <Text style={styles.author}>{book.authorName}</Text>
-        <Text style={styles.price}>{`Price: Rs. ${book.price}`}</Text>
-      </View>
-    </TouchableOpacity>
+    <View style={styles.card}>
+      <Image source={{ uri: book.coverPhoto }} style={styles.coverImage} />
+      <Text className="text-lg text-black">{book.bookName}</Text>
+      <Text className="text-base text-gray-500">{book.authorName}</Text>
+      <Text className="text-[#55898D] text-base">{`Price: Rs. ${book.price}`}</Text>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   card: {
     backgroundColor: 'white',
-    borderRadius: 5,
+    margin: 10,
     padding: 10,
-    marginBottom: 10,
-    shadowColor: '#000',
+    borderRadius: 10,
+    shadowColor: 'rgba(0, 0, 0, 0.2)',
+    shadowOpacity: 0.8,
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 3,
     elevation: 5,
-    height: 200, // Reduced the card's height
+    alignItems: 'center',
   },
   coverImage: {
-    width: '100%',
-    height: 100, // Reduced the cover image's height
-    borderRadius: 5,
+    width: 150,
+    height: 200,
+    resizeMode: 'cover',
+    borderRadius: 10,
   },
   title: {
-    marginLeft: 4, 
-    fontSize: 16, // Slightly reduced the title's font size
+    fontSize: 18,
     fontWeight: 'bold',
-    marginTop: 5, // Adjusted the margin for title
     color: '#333',
+    marginVertical: 5,
   },
   author: {
-    marginLeft: 4, 
-    fontSize: 14, // Slightly reduced the font size for author
-    color: '#555',
+    fontSize: 14,
+    color: '#666',
+    marginBottom: 5,
   },
   price: {
-    marginLeft: 4, 
-    fontSize: 14, // Slightly reduced the font size for price
-    fontWeight: 'bold',
-    color: '#007BFF',
-    marginTop: 5,
+    fontSize: 16,
+    color: 'green',
   },
 });
 
