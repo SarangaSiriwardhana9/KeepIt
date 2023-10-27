@@ -63,7 +63,7 @@ const MenuScreen = () => {
         {profilePicture ? (
           <Image source={{ uri: profilePicture }} style={styles.profileImage} />
         ) : (
-          <Image source={require('../assets/pro.png')} style={styles.profileImage} />
+          <Image source={require('../assets/pro.png')}  className="w-[150px] h-[150px] rounded-full mb-[10px] shadow-2xl" />
         )}
         <Text style={styles.username}>
           {user ? `${user.fullName} ` : 'Guest'}
@@ -74,28 +74,36 @@ const MenuScreen = () => {
           </Text>
         )}
       </View>
-      <View style={styles.buttonContainer}>
+      <View className="flex flex-col gap-4 w-full  mt-8 px-4">
         <TouchableOpacity
-          style={styles.button}
+          className="flex flex-row justify-center items-center py-4 rounded-xl bg-[#55898D]"
           onPress={() => {
             navigation.navigate('UpdateProfileDetails');
           }}
         >
-          <Text style={styles.buttonText}>My Profile</Text>
+          <Text className="text-white text-base font-semibold">My Profile</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {
+        <TouchableOpacity 
+        className="flex flex-row justify-center items-center py-4 rounded-xl bg-[#55898D]"
+        onPress={() => {
           navigation.navigate('MySales');
         }}>
-          <Text style={styles.buttonText}>My Sales</Text>
+          <Text className="text-white text-base font-semibold">My Sales</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>My Purchases</Text>
+        <TouchableOpacity 
+        className="flex flex-row justify-center items-center py-4 rounded-xl bg-[#55898D]"
+        onPress={() => {}}>
+          <Text className="text-white text-base font-semibold">My Purchases</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
-          <Text style={styles.buttonText}>Settings</Text>
+        <TouchableOpacity  
+        className="flex flex-row justify-center items-center py-4 rounded-xl bg-[#55898D]"
+        onPress={() => {}}>
+          <Text className="text-white text-base font-semibold">Settings</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.logoutbutton} onPress={handleLogout}>
-          <Text style={styles.buttonText}>Logout</Text>
+        <TouchableOpacity  
+        className="flex flex-row justify-center items-center py-4 rounded-xl bg-amber-400"
+        onPress={handleLogout}>
+          <Text className="text-black text-base font-semibold">Logout</Text>
         </TouchableOpacity>
         
       </View>
@@ -112,7 +120,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#F2F2F2',
-    marginRight: 20,
   },
   profileContainer: {
     alignItems: 'center',

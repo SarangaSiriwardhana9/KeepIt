@@ -68,7 +68,7 @@ const UpdateProfileDetails = ({ navigation }) => {
   }, [user]);
 
   return (
-    <View style={styles.container}>
+    <View className="mt-8">
       <TouchableOpacity onPress={selectProfilePicture} style={styles.imageContainer}>
         {updatedData.profilePicture ? (
           <Image
@@ -82,46 +82,50 @@ const UpdateProfileDetails = ({ navigation }) => {
 
       <View style={styles.formContainer}>
         {userData ? (
-          <React.Fragment>
-            <Text style={styles.title}>Update Profile Details</Text>
+          <React.Fragment className="flex flex-col gap-4">
+            <Text className="text-center mb-4 text-2xl font-bold text-[#55898D]">Update Profile Details</Text>
             <TextInput
-              style={styles.inputField}
+              className="border  border-[#55898D] bg-white rounded-lg pl-4 mx-4"
               placeholder="Full Name"
               value={updatedData.fullName}
               onChangeText={(text) => setUpdatedData({ ...updatedData, fullName: text })}
             />
             <TextInput
-              style={styles.inputField}
+              className="border  border-[#55898D] bg-white rounded-lg pl-4 mx-4"
               placeholder="Mobile No"
               value={updatedData.mobileNo}
               onChangeText={(text) => setUpdatedData({ ...updatedData, mobileNo: text })}
             />
             <TextInput
-              style={styles.inputField}
+              className="border  border-[#55898D] bg-white rounded-lg pl-4 mx-4"
               placeholder="NIC Card No"
               value={updatedData.nicCardNo}
               onChangeText={(text) => setUpdatedData({ ...updatedData, nicCardNo: text })}
             />
             <TextInput
-              style={styles.inputField}
+              className="border  border-[#55898D] bg-white rounded-lg pl-4 mx-4"
               placeholder="Province"
               value={updatedData.province}
               onChangeText={(text) => setUpdatedData({ ...updatedData, province: text })}
             />
             <TextInput
-              style={styles.inputField}
+              className="border  border-[#55898D] bg-white rounded-lg pl-4 mx-4"
               placeholder="Address"
               value={updatedData.address}
               onChangeText={(text) => setUpdatedData({ ...updatedData, address: text })}
             />
             <TextInput
-              style={styles.inputField}
-              placeholder="Birth Date"
+              className="border  border-[#55898D] bg-white rounded-lg pl-4 mx-4"
+              placeholder="Date of Birth"
               value={updatedData.birthDate}
               onChangeText={(text) => setUpdatedData({ ...updatedData, birthDate: text })}
             />
 
-            <Button title="Update Profile" onPress={handleUpdate} />
+            {/* <Button title="Update Profile" onPress={handleUpdate} /> */}
+
+            <TouchableOpacity  onPress={handleUpdate} className="bg-[#55898D] flex flex-row justify-center items-center py-3 rounded-3xl">
+              <Text className="font-semibold text-white text-lg" >Update Profile</Text>
+            </TouchableOpacity>
           </React.Fragment>
         ) : (
           <Text style={styles.loadingText}>Loading</Text>

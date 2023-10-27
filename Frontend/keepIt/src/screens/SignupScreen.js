@@ -94,7 +94,7 @@ const SignupScreen = () => {
                 <Text className="text-base text-black ml-3">Full Name</Text>
                 <TextInput
                   value={fullName}
-                  className="border bg-white rounded-2xl pl-4"
+                  className="border  border-[#55898D] bg-white rounded-2xl pl-4"
                   placeholder="name"
                   onChangeText={text => setFullName(text)}
                 />
@@ -103,7 +103,7 @@ const SignupScreen = () => {
                 <Text className="text-base text-black ml-3">Mobile No</Text>
                 <TextInput
                   value={mobileNo}
-                  className="border bg-white rounded-2xl pl-4"
+                  className="border  border-[#55898D] bg-white rounded-2xl pl-4"
                   placeholder="mobile"
                   onChangeText={text => setMobileNo(text)}
                 />
@@ -112,16 +112,16 @@ const SignupScreen = () => {
                 <Text className="text-base text-black ml-3">NIC Card No</Text>
                 <TextInput
                   value={nicCardNo}
-                  className="border bg-white rounded-2xl pl-4"
+                  className="border  border-[#55898D] bg-white rounded-2xl pl-4"
                   placeholder="nic"
                   onChangeText={text => setNicCardNo(text)}
                 />
               </View>
               <View style={styles.formInput} className="flex flex-col gap-4 ">
                 <Text className="text-base text-black ml-3">Province</Text>
-                <View className="flex bg-white border rounded-2xl item-center">
+                <View className="flex  border-[#55898D] bg-white border rounded-2xl item-center">
                   <Picker
-                    className="border bg-white rounded-2xl pl-4"
+                    className="border  border-[#55898D] bg-white rounded-2xl pl-4"
                     selectedValue={province}
                     onValueChange={(itemValue, itemIndex) =>
                       setProvince(itemValue)
@@ -144,14 +144,14 @@ const SignupScreen = () => {
                 <TextInput
                   value={email}
                   onChangeText={text => setEmail(text)}
-                  className="border bg-white rounded-2xl pl-4"
+                  className="border  border-[#55898D] bg-white rounded-2xl pl-4"
                   placeholder="email"
                 />
               </View>
               <View style={styles.formInput} className="flex flex-col gap-4 ">
                 <Text className="text-base text-black ml-3">Password</Text>
                 <TextInput
-                  className="border bg-white rounded-2xl pl-4"
+                  className="border  border-[#55898D] bg-white rounded-2xl pl-4"
                   secureTextEntry
                   value={password}
                   onChangeText={text => setPassword(text)}
@@ -162,7 +162,7 @@ const SignupScreen = () => {
                 onPress={handleSignup}
                 className="bg-[#55898D] flex flex-row justify-center items-center py-3 rounded-3xl"
                 >
-                <Text className="font-semibold text-white text-lg">Sign Up</Text>
+                <Text className="font-semibold  text-white text-lg">Sign Up</Text>
               </TouchableOpacity>
               <Text style={styles.orText}>Or</Text>
               <View style={styles.loginLink}>

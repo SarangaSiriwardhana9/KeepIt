@@ -94,7 +94,7 @@ const LoginScreen = () => {
                 value={email}
                 onChangeText={text => setEmail(text)}
                 placeholder="email"
-                className="border bg-white rounded-2xl pl-4"
+                className="border  border-[#55898D] bg-white rounded-2xl pl-4"
               />
             </View>
             <View style={styles.formInput} className="flex flex-col gap-4 ">
@@ -104,7 +104,7 @@ const LoginScreen = () => {
                 onChangeText={text => setPassword(text)}
                 secureTextEntry
                 placeholder="password"
-                className="border bg-white rounded-2xl pl-4"
+                className="border  border-[#55898D] bg-white rounded-2xl pl-4"
               />
               <TouchableOpacity style={styles.forgotPassword}>
                 <Text className="text-[#55898D]">Forgot Password?</Text>
