@@ -91,16 +91,16 @@ const BookDetailsScreen = ({route}) => {
           <TouchableOpacity
             className="bg-[#55898D] py-4 w-full flex flex-row justify-center rounded-xl"
             onPress={buyNow}>
-            <Text style={styles.buttonText}>Buy Now</Text>
+            <Text className="text-white text-base font-semibold" >Buy Now</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="bg-[#fbbf24] py-4 w-full flex flex-row justify-center rounded-xl"
             onPress={addToCart}>
-            <Text style={styles.buttonText}>Add to Cart</Text>
+            <Text className="text-black text-base font-semibold">Add to Cart</Text>
           </TouchableOpacity>
         </View>
         {addedToCart && (
-          <Text style={styles.addedToCartText}>Added to Cart</Text>
+          <Text className="text-black text-base font-semibold">Added to Cart</Text>
         )}
       </View>
     </ScrollView>
