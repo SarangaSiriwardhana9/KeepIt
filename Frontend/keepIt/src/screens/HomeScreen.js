@@ -33,11 +33,19 @@ const HomeScreen = () => {
 
   return (
     <View style={styles.container}>
-
-      
       <FlatList
         data={createPairs(books)}
         keyExtractor={(item, index) => `pair-${index}`}
+        ListHeaderComponent={
+          <View className="w-full  flex flex-col pt-2 gap-2">
+            <View className="w-full h-[75px] border"></View>
+            <View className="w-full h-[150px] border flex flex-row justify-start">
+            <Text className="mb-4 text-xl font-semibold  text-[#55898D]">For You</Text>
+
+            </View>
+            <Text className="mb-4 text-xl font-bold  text-[#55898D]">All Books</Text>
+          </View>
+        }  
         renderItem={({ item }) => (
           <View className="flex flex-row justify-between gap-2 mt-3">
             {item.map((book) => (
