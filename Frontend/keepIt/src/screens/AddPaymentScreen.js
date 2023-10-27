@@ -26,7 +26,7 @@ function AddPaymentScreen({ route }) {
     // Prepare order details
     const orderData = {
       bookId: route.params.bookId,
-      userId,
+      buyerId: userId,
       sellerId: route.params.sellerId, // You should retrieve the seller's ID from your data
       totalPrice: route.params.bookPrice,
       isAccepted: false,

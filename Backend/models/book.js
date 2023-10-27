@@ -13,7 +13,7 @@ const bookSchema = new mongoose.Schema({
   sellerId: mongoose.Schema.Types.ObjectId,  
   isAvailable: {
     type: Boolean,
-    default: true, // Set the default value to true
+    default: true, 
   },
 });
 

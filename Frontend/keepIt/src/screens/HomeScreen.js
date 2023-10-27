@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, TouchableOpacity, StyleSheet,Text } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions, Text, Animated } from 'react-native';
 import axios from 'axios';
 import BookCard from '../components/BookCard';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ const HomeScreen = () => {
   const [books, setBooks] = useState([]);
   const navigation = useNavigation();
   const { userName, userId } = useAuth();
+  const scrollY = new Animated.Value(0);
 
   useEffect(() => {
     axios
@@ -21,38 +22,30 @@ const HomeScreen = () => {
       });
   }, []);
 
-  // Function to create pairs of books to display side by side
-  const createPairs = (data) => {
-    const pairs = [];
-    for (let i = 0; i < data.length; i += 2) {
-      const pair = data.slice(i, i + 2);
-      pairs.push(pair);
-    }
-    return pairs;
+  const calculateCardWidth = () => {
+    const screenWidth = Dimensions.get('window').width;
+    return (screenWidth - 24) / 2; // Subtracting padding and margin
   };
 
   return (
     <View style={styles.container}>
+      <Animated.View style={[styles.headerContainer, { transform: [{ translateY: scrollY }] }]}>
+        {/* You can add your header content and title here */}
+        <Text style={styles.headerTitle}>Header Title</Text>
+        {/* Add any other content to the header container */}
+      </Animated.View>
 
-      
       <FlatList
-        data={createPairs(books)}
-        keyExtractor={(item, index) => `pair-${index}`}
+        data={books}
+        numColumns={2}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.flatListContent}
         renderItem={({ item }) => (
-          <View style={styles.cardPair}>
-            {item.map((book) => (
-              <TouchableOpacity
-                key={book._id}
-                style={styles.cardContainer}
-                onPress={() => {
-                  navigation.navigate('BookDetail', { book });
-                }}
-              >
-                <BookCard book={book} />
-              </TouchableOpacity>
-            ))}
+          <View style={[styles.cardContainer, { width: calculateCardWidth() }]}>
+            <BookCard book={item} navigation={navigation} />
           </View>
         )}
+        onScroll={Animated.event([{ nativeEvent: { contentOffset: { y: scrollY } } }], { useNativeDriver: false })}
       />
     </View>
   );
@@ -60,27 +53,27 @@ const HomeScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F2F2F2',
-    padding: 10,
+    
   },
-  cardPair: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 20,
+  headerContainer: {
+    backgroundColor: 'white',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+  },
+  flatListContent: {
+    paddingTop: 100, // Adjust this value according to your header height
+    padding: 6,
   },
   cardContainer: {
-    flex: 1,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 5,
+    
   },
-  nametext: {
-    color: '#333333',
-  
+  headerTitle: {
+    fontSize: 20,
+    textAlign: 'center',
+
   },
 });
 

@@ -3,9 +3,10 @@ const mongoose = require('mongoose');
 const orderSchema = new mongoose.Schema({
   bookId: {
     type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
     required: true,
   },
-  userId: {
+  buyerId: {
     type: mongoose.Schema.Types.ObjectId, 
     required: true,
   },

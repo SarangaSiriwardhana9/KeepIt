@@ -10,6 +10,11 @@ import UpdateProfileDetails from '../src/screens/UpdateProfileDetails';
 import UpdatePaymentDetails from '../src/screens/UpdatePaymentDetails';
 import SellerContactScreen from '../src/screens/SellerContactScreen';
 import AddPaymentScreen from '../src/screens/AddPaymentScreen';
+import MySales from '../src/screens/MySales';
+import MyPurchases from '../src/screens/MyPurchases';
+import OrderDetailScreen from '../src/screens/OrderDetailScreen';
+import SellsDetailsScreen from '../src/screens/SellsDetailsScreen';
+
 
 const Stack = createStackNavigator();
 
@@ -26,6 +31,10 @@ const StackNavigator = () => (
         <Stack.Screen name="UpdatePaymentDetails" component={UpdatePaymentDetails} options={{ headerShown: false }} />
        <Stack.Screen name="SellerContactScreen" component={SellerContactScreen} options={{ headerShown: false }} />
         <Stack.Screen name="AddPaymentScreen" component={AddPaymentScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="MySales" component={MySales} options={{ headerShown: false }} />
+        <Stack.Screen name="MyPurchases" component={MyPurchases} options={{ headerShown: false }} />
+        <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="SellsDetailsScreen" component={SellsDetailsScreen} options={{ headerShown: false }} />
       </Stack.Navigator>
     </CartProvider>
 

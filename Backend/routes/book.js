@@ -30,7 +30,7 @@ router.get('/all', async (req, res) => {
   }
 });
 
-// Get book details by ID
+// Get book details by ID (retrieving book details by book ID)
 router.get('/:id', getBook, (req, res) => {
   res.json(res.book);
 });
@@ -49,6 +49,7 @@ async function getBook(req, res, next) {
   res.book = book;
   next();
 }
+
 // Add this route to routes/book.js
 // Update book availability to false by book ID
 router.put('/setUnavailable/:id', async (req, res) => {
@@ -68,6 +69,21 @@ router.put('/setUnavailable/:id', async (req, res) => {
   }
 });
 
+
+
+// Get book details by book ID
+router.get('/details/:id', async (req, res) => {
+  try {
+    const book = await Book.findById(req.params.id);
+    if (book) {
+      res.json(book);
+    } else {
+      res.status(404).json({ message: 'Book not found' });
+    }
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 

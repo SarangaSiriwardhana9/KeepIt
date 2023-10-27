@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const Order = require('../models/Order');
 
 // Create a new order
@@ -7,7 +8,7 @@ router.post('/create', async (req, res) => {
   try {
     const {
       bookId,
-      userId,
+      buyerId,
       sellerId,
       totalPrice,
       isAccepted,
@@ -17,7 +18,7 @@ router.post('/create', async (req, res) => {
 
     const newOrder = new Order({
       bookId,
-      userId,
+      buyerId,
       sellerId,
       totalPrice,
       isAccepted,
@@ -32,40 +33,139 @@ router.post('/create', async (req, res) => {
   }
 });
 
-// Get a list of all orders
+// Get all orders by buyerId
 router.get('/all', async (req, res) => {
   try {
-    const orders = await Order.find();
+    const buyerId = req.query.buyerId; // Extract buyerId from the query parameter
+
+    if (!buyerId) {
+      return res.status(400).json({ message: 'BuyerId is required in the query parameter.' });
+    }
+
+    const orders = await Order.find({ buyerId }); // Filter orders by buyerId
     res.json(orders);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
 
-// Update an order by ID (e.g., to mark as accepted, dispatched, or received)
-router.put('/:id', async (req, res) => {
+// Update isReceived status for an order
+router.put('/received/:id', async (req, res) => {
   try {
-    const order = await Order.findById(req.params.id);
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { isReceived: true }, { new: true });
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// Get isReceived status for an order
+router.get('/isReceived/:id', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const order = await Order.findById(orderId);
+
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
 
-    // Update order properties as needed
-    if (req.body.isAccepted !== undefined) {
-      order.isAccepted = req.body.isAccepted;
-    }
-    if (req.body.isDispatched !== undefined) {
-      order.isDispatched = req.body.isDispatched;
-    }
-    if (req.body.isReceived !== undefined) {
-      order.isReceived = req.body.isReceived;
-    }
-
-    const updatedOrder = await order.save();
-    res.json(updatedOrder);
+    res.json({ isReceived: order.isReceived });
   } catch (err) {
-    res.status(400).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 });
+
+// Get all orders by sellerId
+router.get('/sales', async (req, res) => {
+  try {
+    const sellerId = req.query.sellerId; // Extract sellerId from the query parameter
+
+    if (!sellerId) {
+      return res.status(400).json({ message: 'SellerId is required in the query parameter.' });
+    }
+
+    const sales = await Order.find({ sellerId }); // Filter orders by sellerId
+    res.json(sales);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// Update "isAccepted" status for an order
+router.put('/accepted/:id', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { isAccepted: true }, { new: true });
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+
+// Update "isDispatched" status for an order
+router.put('/dispatched/:id', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const updatedOrder = await Order.findByIdAndUpdate(orderId, { isDispatched: true }, { new: true });
+
+    if (!updatedOrder) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json(updatedOrder);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// Updated backend route to check if the order is already accepted
+router.get('/isAccepted/:id', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json({ isAccepted: order.isAccepted });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
+// Updated backend route to check if the order is already dispatched
+router.get('/isDispatched/:id', async (req, res) => {
+  try {
+    const orderId = req.params.id;
+    const order = await Order.findById(orderId);
+
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+
+    res.json({ isDispatched: order.isDispatched });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 
 module.exports = router;

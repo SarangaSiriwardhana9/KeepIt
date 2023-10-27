@@ -88,7 +88,8 @@ const MenuScreen = () => {
         }}>
           <Text style={styles.buttonText}>My Sales</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {}}>
+
+        <TouchableOpacity style={styles.button} onPress={() => {navigation.navigate('MyPurchases')}}>
           <Text style={styles.buttonText}>My Purchases</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => {}}>

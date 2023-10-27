@@ -11,20 +11,6 @@ const BookDetailsScreen = ({ route }) => {
   const { userId } = useAuth();
   const [addedToCart, setAddedToCart] = useState(false);
 
-  useEffect(() => {
-    // Check if the book is already in the cart when the component mounts
-    Axios.get(`http://localhost:3000/cart/user/${userId}`)
-      .then((response) => {
-        const cartItems = response.data;
-        const bookInCart = cartItems.find((item) => item.bookId === book._id);
-        if (bookInCart) {
-          setAddedToCart(true);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [userId, book._id]);
 
   const contactSeller = () => {
     navigation.navigate('SellerContactScreen', {
@@ -67,12 +53,20 @@ const BookDetailsScreen = ({ route }) => {
       <View style={styles.detailsContainer}>
     
         <Text style={styles.title}>Book Name: {book.bookName}</Text>
-        <Text style={styles.sellerId}>Seller ID: {book.sellerId}</Text>
+        
         <Text style={styles.author}>Author: {book.authorName}</Text>
         <Text style={styles.price}>Price: Rs. {book.price}</Text>
         <Text style={styles.description}>Description: {book.description}</Text>
         <Text style={styles.SellerInfo}>Seller: {book.sellerName}</Text>
+        <TouchableOpacity style={styles.contactSeller} onPress={contactSeller}>
+            <Text style={styles.buttonText}>Contact Seller</Text>
+          </TouchableOpacity>
+
         <View style={styles.buttonContainer}>
+
+
+
+         
           <TouchableOpacity style={styles.buyNowButton} onPress={buyNow}>
             <Text style={styles.buttonText}>Buy Now</Text>
           </TouchableOpacity>
