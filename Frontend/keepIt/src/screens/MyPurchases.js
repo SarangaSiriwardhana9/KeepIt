@@ -43,7 +43,7 @@ const MyPurchases = ({ navigation }) => {
     <ScrollView>
       <View>
  
-        <Text style={styles.HeaderTxt}>Purchased Orders</Text>
+        <Text className="my-4 text-center text-xl font-semibold  text-[#55898D]">Purchased Orders</Text>
         {purchasedBooks.map((order, index) => (
           <MyOrderCard key={index} order={order} navigation={navigation} />
         ))}
