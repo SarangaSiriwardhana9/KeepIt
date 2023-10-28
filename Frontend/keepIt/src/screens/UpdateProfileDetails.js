@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, StyleSheet, Button, Image } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, StyleSheet, Button, Image,ScrollView } from 'react-native';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import ImagePicker from 'react-native-image-crop-picker';
@@ -68,6 +68,7 @@ const UpdateProfileDetails = ({ navigation }) => {
   }, [user]);
 
   return (
+    <ScrollView>
     <View className="mt-8">
       <TouchableOpacity onPress={selectProfilePicture} style={styles.imageContainer}>
         {updatedData.profilePicture ? (
@@ -132,6 +133,7 @@ const UpdateProfileDetails = ({ navigation }) => {
         )}
       </View>
     </View>
+    </ScrollView>
   );
 };
 

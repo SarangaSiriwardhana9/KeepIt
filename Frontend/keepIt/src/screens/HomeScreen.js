@@ -1,94 +1,161 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, TouchableOpacity, StyleSheet,Text } from 'react-native';
-import axios from 'axios';
+import { View, ScrollView, StyleSheet, FlatList, TextInput, Button, Text, TouchableOpacity } from 'react-native';
 import BookCard from '../components/BookCard';
-import { useNavigation } from '@react-navigation/native';
 import { useAuth } from '../../context/AuthContext';
+import axios from 'axios';
+
+
 
 const HomeScreen = () => {
+  const { userName, userId, userProvince } = useAuth();
+  const {user, logout} = useAuth();
   const [books, setBooks] = useState([]);
-  const navigation = useNavigation();
-  const { userName, userId } = useAuth();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState([]); // Define searchResults state
+  const [forYouBooks, setForYouBooks] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3000/book/all')
+    setLoading(true);
+  
+    // Fetch a list of books from your API using Axios or fetch
+    axios.get('http://localhost:3000/book/all')
       .then((response) => {
-        setBooks(response.data);
+        // Filter the books where isAvailable is true
+        const availableBooks = response.data.filter((book) => book.isAvailable === true);
+        setBooks(availableBooks);
+        setLoading(false);
       })
       .catch((error) => {
-        console.error('Error fetching book data:', error);
+        console.error(error);
+        setLoading(false);
       });
-  }, []);
 
-  // Function to create pairs of books to display side by side
-  const createPairs = (data) => {
-    const pairs = [];
-    for (let i = 0; i < data.length; i += 2) {
-      const pair = data.slice(i, i + 2);
-      pairs.push(pair);
+    axios.get(`http://localhost:3000/book/byProvince/${userProvince}`)
+      .then((response) => {
+        setForYouBooks(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, [userProvince]);
+
+  const handleSearch = () => {
+    if (searchQuery.trim() === '') {
+      // Prevent empty search queries
+      return;
     }
-    return pairs;
+
+    setLoading(true);
+    // Fetch books that match the search query
+    axios.get(`http://localhost:3000/book/search?query=${searchQuery}`)
+      .then((response) => {
+        setSearchResults(response.data); // Set search results
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
   };
 
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={createPairs(books)}
-        keyExtractor={(item, index) => `pair-${index}`}
-        ListHeaderComponent={
-          <View className="w-full  flex flex-col pt-2 gap-2">
-            <View className="w-full h-[75px] border"></View>
-            <View className="w-full h-[150px] border flex flex-row justify-start">
-            <Text className="mb-4 text-xl font-semibold  text-[#55898D]">For You</Text>
-
-            </View>
-            <Text className="mb-4 text-xl font-bold  text-[#55898D]">All Books</Text>
-          </View>
-        }  
-        renderItem={({ item }) => (
-          <View className="flex flex-row justify-between gap-2 mt-3">
-            {item.map((book) => (
-              <TouchableOpacity
-                key={book._id}
-                style={styles.cardContainer}
-                onPress={() => {
-                  navigation.navigate('BookDetail', { book });
-                }}
-              >
-                <BookCard book={book} />
-              </TouchableOpacity>
-            ))}
-          </View>
-        )}
-      />
-    </View>
+    <ScrollView style={styles.container}>
+      <Text style={{ fontSize: 20, fontWeight: 'bold', color: '#55898D', marginBottom:10}}>
+          KeepIt!
+        </Text>
+        {/* display user profile completion value */ }
+     
+      <View style={styles.searchContainer}>
+        
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search by book name"
+          value={searchQuery}
+          onChangeText={(text) => setSearchQuery(text)}
+        />
+        <TouchableOpacity style={styles.SearchButton} onPress={handleSearch}>
+          <Text style={styles.SearchButtonText}>Search</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.forYouContainer}>
+        <Text style={styles.forYouText}>For You</Text>
+        <FlatList
+          data={forYouBooks}
+          horizontal
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <BookCard book={item} />}
+          contentContainerStyle={styles.forYouBooksList}
+        />
+      </View>
+      <View>
+        <Text style={styles.forYouText}>All Books</Text>
+      </View>
+      {loading ? (
+        <Text>Loading...</Text>
+      ) : searchResults.length > 0 ? (
+        <FlatList
+          data={searchResults}
+          numColumns={2}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <BookCard book={item} />}
+        />
+      ) : books.length > 0 ? (
+        <FlatList
+          data={books}
+          numColumns={2}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <BookCard book={item} />}
+        />
+      ) : (
+        <Text>No books found.</Text>
+      )}
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F2',
     padding: 10,
   },
-  cardPair: {
+  searchContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 10,
   },
-  cardContainer: {
+  searchInput: {
     flex: 1,
-    borderRadius: 10,
-    backgroundColor: 'white',
-    shadowColor: 'rgba(0, 0, 0, 0.2)',
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 5,
+    marginRight: 5,
+    padding: 10,
+    borderColor: 'gray',
+    borderWidth: 1,
   },
-  nametext: {
-    color: '#333333',
-  
+  forYouContainer: {
+    marginBottom: 10,
+    height: 250,
+      width: '120%',
+  },
+  forYouText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#58524C',
+    marginBottom: 10,
+  },
+  forYouBooksList: {
+    marginHorizontal: -5,
+  },
+  SearchButton: {
+    backgroundColor: '#55898D',
+    padding: 10,
+    borderRadius: 10,
+  },
+  SearchButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 });
 

@@ -20,15 +20,36 @@ router.post('/add', async (req, res) => {
   }
 });
 
-// Get a list of all books
+// Get a list of all books sorted by _id in descending order (latest added first)
 router.get('/all', async (req, res) => {
   try {
-    const books = await Book.find();
+    const books = await Book.find({ isAvailable: true }).sort({ _id: -1 });
     res.json(books);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
 });
+
+// Search books by name
+router.get('/search', async (req, res) => {
+  try {
+    const { query } = req.query; // Extract the search query from the query parameters
+
+    if (!query) {
+      return res.status(400).json({ message: 'Search query is required in the query parameter.' });
+    }
+
+    const regex = new RegExp(query, 'i'); // Create a case-insensitive regular expression for the search
+
+    const books = await Book.find({ bookName: { $regex: regex } });
+
+    res.json(books);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+
 
 // Get book details by ID (retrieving book details by book ID)
 router.get('/:id', getBook, (req, res) => {
@@ -85,6 +106,16 @@ router.get('/details/:id', async (req, res) => {
   }
 });
 
+// Get books by seller's province
+router.get('/byProvince/:province', async (req, res) => {
+  try {
+    const province = req.params.province;
+    const books = await Book.find({ isAvailable: true, sellerProvince: province });
+    res.json(books);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch books by province' });
+  }
+});
 
 
 module.exports = router;

@@ -19,26 +19,19 @@ const BookDetailsScreen = ({route}) => {
   const [addedToCart, setAddedToCart] = useState(false);
 
   useEffect(() => {
-    // Check if the book is already in the cart when the component mounts
-    Axios.get(`http://localhost:3000/cart/user/${userId}`)
-      .then(response => {
-        const cartItems = response.data;
-        const bookInCart = cartItems.find(item => item.bookId === book._id);
-        if (bookInCart) {
-          setAddedToCart(true);
-        }
-      })
-      .catch(error => {
-        console.error(error);
-      });
+   
   }, [userId, book._id]);
 
   const contactSeller = () => {
     navigation.navigate('SellerContactScreen', {
       sellerName: book.sellerName,
       sellerId: book.sellerId,
+      
     });
   };
+
+
+          
 
   const addToCart = () => {
     Axios.post('http://localhost:3000/cart/add-to-cart', {
@@ -77,7 +70,7 @@ const BookDetailsScreen = ({route}) => {
         <Text className="text-[#55898D] font-semibold text-3xl">
           {book.bookName}
         </Text>
-        <Text style={styles.sellerId}>Seller ID: {book.sellerId}</Text>
+       
         <Text className="text-base text-black">by {book.authorName}</Text>
         <Text className="text-teal-800 text-xl">Rs. {book.price}.00</Text>
         <Text className="text-base text-black leading-normal whitespace-nowrap">
@@ -101,7 +94,7 @@ const BookDetailsScreen = ({route}) => {
           </TouchableOpacity>
         </View>
         {addedToCart && (
-          <Text className="text-black text-base font-semibold">
+          <Text className="text-black text-base font-semibold ">
             Added to Cart
           </Text>
         )}
@@ -117,7 +110,8 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   swiperContainer: {
-    height: 200,
+    height: 250,
+    marginBottom: 16,
   },
   image: {
     flex: 1,

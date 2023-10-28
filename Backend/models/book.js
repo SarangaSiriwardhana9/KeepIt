@@ -8,6 +8,7 @@ const bookSchema = new mongoose.Schema({
   price: Number,
   coverPhoto: String,
   secondaryImage: String,
+  sellerProvince: String,
   thirdImage: String,
   sellerName: String,  
   sellerId: mongoose.Schema.Types.ObjectId,  

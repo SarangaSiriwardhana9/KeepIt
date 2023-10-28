@@ -87,6 +87,16 @@ const MenuScreen = () => {
           }}>
           <Text className="text-white text-base font-semibold">My Profile</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          className="flex flex-row justify-center items-center py-4 rounded-xl bg-[#55898D]"
+          onPress={() => {
+            navigation.navigate('MyListinings');
+          }}>
+          <Text className="text-white text-base font-semibold">My Listnings</Text>
+        </TouchableOpacity>
+
+
         <TouchableOpacity
           className="flex flex-row justify-center items-center py-4 rounded-xl bg-[#55898D]"
           onPress={() => {

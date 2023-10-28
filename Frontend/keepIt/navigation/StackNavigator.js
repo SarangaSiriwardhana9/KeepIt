@@ -16,6 +16,7 @@ import OrderDetailScreen from '../src/screens/OrderDetailScreen';
 import SellsDetailsScreen from '../src/screens/SellsDetailsScreen';
 
 
+
 const Stack = createStackNavigator();
 
 const StackNavigator = () => (
@@ -34,7 +35,9 @@ const StackNavigator = () => (
         <Stack.Screen name="MySales" component={MySales} options={{ headerShown: false }} />
         <Stack.Screen name="MyPurchases" component={MyPurchases} options={{ headerShown: false }} />
         <Stack.Screen name="OrderDetailScreen" component={OrderDetailScreen} options={{ headerShown: false }} />
+       
         <Stack.Screen name="SellsDetailsScreen" component={SellsDetailsScreen} options={{ headerShown: false }} />
+      
       </Stack.Navigator>
     </CartProvider>
 

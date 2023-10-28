@@ -12,12 +12,15 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {useAuth} from '../../context/AuthContext';
+import CompleteAddBook from '../components/alerts/CompleteAddBook';
 
 const AddNewBook = () => {
-  const {userName, userId} = useAuth();
+  const { userName, userId, userProvince } = useAuth();
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [secondaryImage, setSecondaryImage] = useState(null);
   const [thirdImage, setThirdImage] = useState(null);
+  
+  const [isSuccessAlertVisible, setIsSuccessAlertVisible] = useState(false);
   const [bookDetails, setBookDetails] = useState({
     bookName: '',
     authorName: '',
@@ -25,6 +28,17 @@ const AddNewBook = () => {
     pages: '',
     price: '',
   });
+
+
+  const openSuccessAlert = () => {
+    setIsSuccessAlertVisible(true);
+  };
+
+  const closeSuccessAlert = () => {
+    setIsSuccessAlertVisible(false);
+    navigation.navigate('Home'); // Navigate to HomeScreen
+  };
+
 
   const handleImageSelection = async imageType => {
     try {
@@ -69,6 +83,7 @@ const AddNewBook = () => {
         thirdImage,
         sellerName: userName, // Set the seller's name
         sellerId: userId, // Set the seller's ID
+        sellerProvince: userProvince, // Set the seller's province
       };
 
       const response = await axios.post(
@@ -78,6 +93,7 @@ const AddNewBook = () => {
 
       if (response.status === 200) {
         console.log('Book data sent successfully.');
+        openSuccessAlert();
       } else {
         console.error('Error sending book data:', response.data.message);
       }
@@ -89,7 +105,7 @@ const AddNewBook = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Text className="text-center mb-4 text-2xl font-bold  text-[#55898D]">Add a Book</Text>
-
+  
       <Text style={styles.label}>Cover Image :</Text>
       <TouchableOpacity
         style={styles.imageContainer}
@@ -109,7 +125,7 @@ const AddNewBook = () => {
           {secondaryImage ? (
             <Image source={{uri: secondaryImage}} style={styles.imageSmall} />
           ) : (
-            <Text style={styles.imageText}>Select Secondary Image</Text>
+            <Text style={styles.imageText}> Secondary Image</Text>
           )}
         </TouchableOpacity>
 
@@ -119,7 +135,7 @@ const AddNewBook = () => {
           {thirdImage ? (
             <Image source={{uri: thirdImage}} style={styles.imageSmall} />
           ) : (
-            <Text style={styles.imageText}>Select Third Image</Text>
+            <Text style={styles.imageText}> Third Image</Text>
           )}
         </TouchableOpacity>
       </View>
@@ -170,8 +186,13 @@ const AddNewBook = () => {
       <TouchableOpacity
         className="bg-[#55898D] flex flex-row justify-center items-center py-3 mt-8 rounded-3xl"
         onPress={handleSubmit}>
-        <Text style={styles.addButtonLabel}>Next step</Text>
+        <Text style={styles.addButtonLabel}>Add Book</Text>
       </TouchableOpacity>
+
+      <CompleteAddBook
+        isVisible={isSuccessAlertVisible}
+        onClose={closeSuccessAlert}
+      />
     </ScrollView>
   );
 };

@@ -176,6 +176,7 @@ const styles = StyleSheet.create({
   },
   formInput: {
     marginBottom: 20,
+    color: 'black',
   },
   formLabel: {
     color: 'gray',

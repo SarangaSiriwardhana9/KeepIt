@@ -261,7 +261,11 @@ const styles = StyleSheet.create({
       flex: 1,
     },
     paymentConfirmedText:{
-      color:'green'
+      marginTop: 35,
+      color:'green',
+      textAlign:'center',
+      fontWeight:'bold',
+      fontSize:20,
     }
         
 
