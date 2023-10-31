@@ -55,7 +55,7 @@ Happy coding! 📚
 
 <table>
   <tr>
-    <td align="center"><img src="https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/469607e3-8d23-4f2e-9e18-1574cef3bf2c" width="200" height="200"><br /><sub><b>Image 1</b></sub></td>
+    <td align="center"><img src="https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/469607e3-8d23-4f2e-9e18-1574cef3bf2c" width="200" height="300"><br /><sub><b>Image 1</b></sub></td>
     <td align="center"><img src="https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/72d157b5-35a2-45dd-9cea-2ded8296d825" width="200" height="200"><br /><sub><b>Image 2</b></sub></td>
     <td align="center"><img src="https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/9a81146a-89c5-4f00-8ad4-0e3c88304fa8" width="200" height="200"><br /><sub><b>Image 3</b></sub></td>
   </tr>
@@ -75,3 +75,4 @@ Happy coding! 📚
     <td align="center"><img src="https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/76d11269-c0c7-434a-9db8-6dfce7a62aa0" width="200" height="200"><br /><sub><b>Image 12</b></sub></td>
   </tr>
 </table>
+
