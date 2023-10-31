@@ -50,5 +50,5 @@ This mobile app project is designed to create a user-friendly and efficient plat
 Feel free to reach out if you have any questions or need assistance. Let's build a vibrant community and make this app the go-to platform for book enthusiasts!
 
 Happy coding! 📚
-![WhatsApp Image 2023-10-31 at 21 41 44](https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/469607e3-8d23-4f2e-9e18-1574cef3bf2c)
-![WhatsApp Image 2023-10-31 at 21 41 42](https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/72d157b5-35a2-45dd-9cea-2ded8296d825)
+![WhatsApp Image 2023-10-31 at 21 41 44](https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/469607e3-8d23-4f2e-9e18-1574cef3bf2c)![WhatsApp Image 2023-10-31 at 21 41 42](https://github.com/SarangaSiriwardhana9/KeepIt/assets/99233703/72d157b5-35a2-45dd-9cea-2ded8296d825)
+
