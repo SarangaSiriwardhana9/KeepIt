@@ -46,6 +46,10 @@ This mobile app project is designed to create a user-friendly and efficient plat
 4. Start the Node.js server.
 5. Begin contributing or testing the app.
 
+## Contributors
+
+- Saranga (https://github.com/SarangaSiriwardhana9) 
+- Imesh(https://github.com/ImeshR) 
 
 
 Feel free to reach out if you have any questions or need assistance. Let's build a vibrant community and make this app the go-to platform for book enthusiasts!
